@@ -138,3 +138,12 @@ app.*.symbols
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
 !.vscode/settings.json
+
+############################################
+
+# flutter_intl 產生的語言相關程式碼，請自行產生，不要放入版本控制
+/lib/localization/generated/intl/
+/lib/localization/generated/l10n.dart
+
+# auto_route 產生的路由相關程式碼，請自行產生，不要放入版本控制
+/lib/router/router.gr.dart
