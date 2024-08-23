@@ -778,7 +778,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
 
     String deviceImagePath = _meshtasticDeviceImageFiles.firstWhere(
         (file) => file.endsWith("${nodeInfo?['hardware']}.jpg"),
-        orElse: () => 'assets/images/meshtastic/device/0.default.jpg');
+        orElse: () => 'assets/images/meshtastic/device/0.default.png');
 
     var textSizeGroup1 = AutoSizeGroup();
 
