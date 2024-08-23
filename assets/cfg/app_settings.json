@@ -1,0 +1,84 @@
+{
+  "api": {
+    "url": {
+      "global": "https://meshsight-api-global.nfs.tw",
+      "tw": "https://meshsight-api-tw.nfs.tw"
+    },
+    "timeout": 60
+  },
+  "map":{
+    "userAgentPackageName": "tw.nfs.flutter.meshsightapp",
+    "tile": {
+      "global":{
+        "default": {
+          "name": "OpenStreetMap",
+          "url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "copyrightName": "OpenStreetMap",
+          "copyrightUrl": "https://openstreetmap.org/copyright"
+        }
+      },
+      "tw":{
+        "default": {
+          "name": "OpenStreetMap",
+          "url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+          "copyrightName": "OpenStreetMap",
+          "copyrightUrl": "https://openstreetmap.org/copyright"
+        },
+        "nlsc_EMAP15":{
+          "name": "臺灣通用電子地圖(套疊等高線無門牌)",
+          "url": "https://wmts.nlsc.gov.tw/wmts/EMAP15/default/EPSG:3857/{z}/{y}/{x}",
+          "copyrightName": "內政部國土測繪中心-國土測繪圖資服務雲",
+          "copyrightUrl": "https://maps.nlsc.gov.tw/MbIndex_qryPage.action?fun=3"
+        },
+        "nlsc_EMAP5":{
+          "name": "臺灣通用電子地圖(套疊等高線+門牌)",
+          "url": "https://wmts.nlsc.gov.tw/wmts/EMAP5/default/EPSG:3857/{z}/{y}/{x}",
+          "copyrightName": "內政部國土測繪中心-國土測繪圖資服務雲",
+          "copyrightUrl": "https://maps.nlsc.gov.tw/MbIndex_qryPage.action?fun=3"
+        },
+        "nlsc_EMAP6":{
+          "name": "臺灣通用電子地圖(+門牌,不含等高線)",
+          "url": "https://wmts.nlsc.gov.tw/wmts/EMAP6/default/EPSG:3857/{z}/{y}/{x}",
+          "copyrightName": "內政部國土測繪中心-國土測繪圖資服務雲",
+          "copyrightUrl": "https://maps.nlsc.gov.tw/MbIndex_qryPage.action?fun=3"
+        },
+        "nlsc_EMAP16":{
+          "name": "臺灣通用電子地圖(不含等高線及門牌)",
+          "url": "https://wmts.nlsc.gov.tw/wmts/EMAP16/default/EPSG:3857/{z}/{y}/{x}",
+          "copyrightName": "內政部國土測繪中心-國土測繪圖資服務雲",
+          "copyrightUrl": "https://maps.nlsc.gov.tw/MbIndex_qryPage.action?fun=3"
+        },
+        "nlsc_EMAP01":{
+          "name": "臺灣通用電子地圖(灰階)",
+          "url": "https://wmts.nlsc.gov.tw/wmts/EMAP01/default/EPSG:3857/{z}/{y}/{x}",
+          "copyrightName": "內政部國土測繪中心-國土測繪圖資服務雲",
+          "copyrightUrl": "https://maps.nlsc.gov.tw/MbIndex_qryPage.action?fun=3"
+        },
+        "nlsc_EMAP2":{
+          "name": "正射影像(航照圖)",
+          "url": "https://wmts.nlsc.gov.tw/wmts/EMAP2/default/EPSG:3857/{z}/{y}/{x}",
+          "copyrightName": "內政部國土測繪中心-國土測繪圖資服務雲",
+          "copyrightUrl": "https://maps.nlsc.gov.tw/MbIndex_qryPage.action?fun=3"
+        },
+        "nlsc_PHOTO_MIX":{
+          "name": "正射影像(航照混合)",
+          "url": "https://wmts.nlsc.gov.tw/wmts/PHOTO_MIX/default/EPSG:3857/{z}/{y}/{x}",
+          "copyrightName": "內政部國土測繪中心-國土測繪圖資服務雲",
+          "copyrightUrl": "https://maps.nlsc.gov.tw/MbIndex_qryPage.action?fun=3"
+        },
+        "nlsc_EMAP9":{
+          "name": "臺灣通用電子地圖(無鐵公路)",
+          "url": "https://wmts.nlsc.gov.tw/wmts/EMAP9/default/EPSG:3857/{z}/{y}/{x}",
+          "copyrightName": "內政部國土測繪中心-國土測繪圖資服務雲",
+          "copyrightUrl": "https://maps.nlsc.gov.tw/MbIndex_qryPage.action?fun=3"
+        },
+        "nlsc_EMAPX99":{
+          "name": "臺灣通用電子地圖(向量)",
+          "url": "https://wmts.nlsc.gov.tw/wmts/EMAPX99/default/EPSG:3857/{z}/{y}/{x}",
+          "copyrightName": "內政部國土測繪中心-國土測繪圖資服務雲",
+          "copyrightUrl": "https://maps.nlsc.gov.tw/MbIndex_qryPage.action?fun=3"
+        }
+      }
+    }
+  }
+}
