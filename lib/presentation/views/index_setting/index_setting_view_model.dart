@@ -109,7 +109,7 @@ class IndexSettingViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  Future<void> mapNodeMaxAgeInHoursRadioOnChanged(int? value) async {
+  Future<void> mapNodeMaxAgeInHoursSliderOnChanged(int? value) async {
     if (value == null) return;
     setBusy(true);
     _mapNodeMaxAgeInHours = value;

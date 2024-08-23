@@ -129,36 +129,15 @@ class IndexSettingView extends StatelessWidget {
               BaseExpansionTile(
                 title: S.current.MapNodeMaxAge,
                 children: [
-                  RadioListTile<int>(
-                    title: Text('24 ${S.current.Hour}'),
-                    value: 24,
-                    groupValue: model.mapNodeMaxAgeInHours,
+                  Slider(
+                    value: model.mapNodeMaxAgeInHours.toDouble(),
+                    min: 1,
+                    max: 36,
+                    divisions: 35,
+                    label:
+                        "${model.mapNodeMaxAgeInHours.toString()} ${S.current.Hour}",
                     onChanged: (value) {
-                      model.mapNodeMaxAgeInHoursRadioOnChanged(value);
-                    },
-                  ),
-                  RadioListTile<int>(
-                    title: Text('3 ${S.current.Day}'),
-                    value: 72,
-                    groupValue: model.mapNodeMaxAgeInHours,
-                    onChanged: (value) {
-                      model.mapNodeMaxAgeInHoursRadioOnChanged(value);
-                    },
-                  ),
-                  RadioListTile<int>(
-                    title: Text('5 ${S.current.Day}'),
-                    value: 120,
-                    groupValue: model.mapNodeMaxAgeInHours,
-                    onChanged: (value) {
-                      model.mapNodeMaxAgeInHoursRadioOnChanged(value);
-                    },
-                  ),
-                  RadioListTile<int>(
-                    title: Text('7 ${S.current.Day}'),
-                    value: 168,
-                    groupValue: model.mapNodeMaxAgeInHours,
-                    onChanged: (value) {
-                      model.mapNodeMaxAgeInHoursRadioOnChanged(value);
+                      model.mapNodeMaxAgeInHoursSliderOnChanged(value.toInt());
                     },
                   ),
                 ],
