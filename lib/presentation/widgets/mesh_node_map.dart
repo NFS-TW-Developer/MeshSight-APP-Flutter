@@ -347,6 +347,8 @@ class _MeshNodeMapState extends State<MeshNodeMap>
           nodeAId,
           nodeAInfo?['shortName'] ?? '???',
           DateTime.tryParse(nodeAPosition['updateAt'])!));
+      // 反轉順序，讓最新的節點在最上面
+      nodeMarker = nodeMarker.reversed.toList();
     }
 
     // 產生節點連線
