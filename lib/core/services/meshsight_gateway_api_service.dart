@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging_flutter/logging_flutter.dart';
+import 'package:meshsightapp/core/models/app_setting_api.dart';
 
 import '../utils/shared_preferences_util.dart';
 
@@ -38,8 +39,9 @@ class MeshsightGatewayApiService {
   // 將 URL 的構建抽象化到一個單獨的方法中，避免在每個 API 請求中重複相同的 URL 構建代碼
   Future<Uri> _buildGeneralUri(String path,
       {Map<String, dynamic>? queryParams}) async {
-    String apiRegion = await SharedPreferencesUtil.getApiRegion();
-    String baseURL = GlobalConfiguration().getDeepValue("api:url:$apiRegion");
+    AppSettingApi appSettingApi =
+        await SharedPreferencesUtil.getAppSettingApi();
+    String baseURL = appSettingApi.apiUrl ?? '';
 
     Uri uri = Uri.parse(baseURL);
 

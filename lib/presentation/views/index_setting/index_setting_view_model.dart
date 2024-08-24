@@ -3,11 +3,15 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:meshsightapp/core/models/app_setting_map.dart';
 
 import '../../../core/app_core.dart';
+import '../../../core/models/app_setting_api.dart';
 import '../../../core/services/localization_service.dart';
 import '../../../core/utils/shared_preferences_util.dart';
 import '../base_view_model.dart';
 
 class IndexSettingViewModel extends BaseViewModel {
+  AppSettingApi _appSettingApi = AppSettingApi();
+  AppSettingApi get appSettingApi => _appSettingApi;
+
   AppSettingMap _appSettingMap = AppSettingMap();
   AppSettingMap get appSettingMap => _appSettingMap;
 
@@ -28,9 +32,26 @@ class IndexSettingViewModel extends BaseViewModel {
   }
 
   Future<void> initData() async {
+    await setAppSettingApi(await SharedPreferencesUtil.getAppSettingApi());
+    await setAppSettingMap(await SharedPreferencesUtil.getAppSettingMap());
+    await setCurrentLocale(appLocator<LocalizationService>().appLocale);
+  }
+
+  Future<void> setAppSettingApi(AppSettingApi appSettingApi) async {
     setBusy(true);
-    _appSettingMap = await SharedPreferencesUtil.getAppSettingMap();
-    _currentLocale = appLocator<LocalizationService>().appLocale;
+    _appSettingApi =
+        await SharedPreferencesUtil.setAppSettingApi(appSettingApi);
+    setBusy(false);
+  }
+
+  Future<void> resetAppSettingApi() async {
+    await SharedPreferencesUtil.removeAppSettingApi();
+  }
+
+  Future<void> setAppSettingMap(AppSettingMap appSettingMap) async {
+    setBusy(true);
+    _appSettingMap =
+        await SharedPreferencesUtil.setAppSettingMap(appSettingMap);
     _mapTileRegionList =
         GlobalConfiguration().getDeepValue('map:tile').keys.toList();
     _mapTileProviderList = GlobalConfiguration()
@@ -38,14 +59,6 @@ class IndexSettingViewModel extends BaseViewModel {
         .keys
         .toList();
     setBusy(false);
-  }
-
-  Future<void> setAppSettingMap(AppSettingMap appSettingMap) async {
-    setBusy(true);
-    _appSettingMap =
-        await SharedPreferencesUtil.setAppSettingMap(appSettingMap);
-    setBusy(false);
-    await initData();
   }
 
   Future<void> setCurrentLocale(Locale? locale) async {

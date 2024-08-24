@@ -1,8 +1,9 @@
 {
     "@@locale": "en",
     "Altitude": "Altitude",
+    "Api": "API",
     "ApiErrorMsg1": "API connection error, please try again later.",
-    "ApiRegion": "API Region",
+    "ApiUrl": "API URL",
     "Application": "Application",
     "Analysis": "Analysis",
     "Channel": "Channel",
@@ -44,9 +45,13 @@
     "MapTileRegion": "Map Tile Region",
     "NodeInformation": "Node Information",
     "Operate": "Operate",
+    "Reset": "Reset",
     "RootTopic": "Root Topic",
     "SatsInView": "Sats In View",
+    "SelectOurDemoApi": "Select Our Demo API Server",
     "Setting": "Setting",
+    "Start": "Start",
+    "STFormatErr": "{something} format error.",
     "Successful": "Successful",
     "TimeAgoWeek": "{time} week(s) ago",
     "TimeAgoDay": "{time} day(s) ago",
@@ -54,5 +59,7 @@
     "TimeAgoMinute": "{time} minute(s) ago",
     "UpdateAt": "Update At",
     "Via": "via",
+    "WelcomeTitle": "Welcome to MeshSight APP",
+    "WelcomeContent": "With the MeshSight APP, you can easily visualize node information. \nBefore you start, please enter the URL of your MeshSight API. If you don't have your own MeshSight API, you can try using our Demo API Server.",
     "Z": "Z"
 }

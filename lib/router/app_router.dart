@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 
 import 'app_router.gr.dart';
+import 'guard/auth_guard.dart';
 
 /*
   這是一個專門處理 Router 的地方
@@ -11,9 +12,14 @@ class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
+          path: '/welcome',
+          page: WelcomeRoute.page,
+        ),
+        AutoRoute(
           path: '/index',
-          page: IndexRoute.page,
           initial: true,
+          page: IndexRoute.page,
+          guards: [AuthGuard()],
           children: [
             AutoRoute(
               path: 'map', page: IndexMapRoute.page,

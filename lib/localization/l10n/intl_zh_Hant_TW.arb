@@ -1,8 +1,9 @@
 {
     "@@locale": "zh_Hant_TW",
     "Altitude": "海拔",
+    "Api": "API",
     "ApiErrorMsg1": "API 連線錯誤，請稍候再重新嘗試。",
-    "ApiRegion": "API 地區",
+    "ApiUrl": "API 網址",
     "Application": "應用程式",
     "Analysis": "分析",
     "Channel": "Channel",
@@ -44,9 +45,13 @@
     "MapTileRegion": "地圖圖磚地區",
     "NodeInformation": "節點資訊",
     "Operate": "操作",
+    "Reset": "重設",
     "RootTopic": "Root Topic",
     "SatsInView": "可見衛星數",
+    "SelectOurDemoApi": "選擇由我們提供的 Demo API Server",
     "Setting": "設定",
+    "Start": "開始",
+    "STFormatErr": "{something} 格式錯誤",
     "Successful": "成功",
     "TimeAgoWeek": "{time} 星期前",
     "TimeAgoDay": "{time} 天前",
@@ -54,5 +59,7 @@
     "TimeAgoMinute": "{time} 分鐘前",
     "UpdateAt": "更新時間",
     "Via": "via",
+    "WelcomeTitle": "歡迎使用 MeshSight APP",
+    "WelcomeContent": "您可以透過 MeshSight APP 輕鬆地以視覺化方式查看節點資訊。\n在開始之前，請先輸入您建立的 MeshSight API 網址。如果您沒有自己建立的 MeshSight API，可以嘗試使用我們提供的 Demo API Server。",
     "Z": "Z"
 }

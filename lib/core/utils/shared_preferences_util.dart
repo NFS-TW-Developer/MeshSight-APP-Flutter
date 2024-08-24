@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:meshsightapp/core/models/app_setting_map.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/app_setting_api.dart';
+
 class SharedPreferencesUtil {
   /*
   基礎 function 儲存資料
@@ -163,6 +165,29 @@ class SharedPreferencesUtil {
   // 刪除 app.apiRegion
   static Future<void> removeApiRegion() async {
     await removeData('app.apiRegion');
+    return;
+  }
+
+  // app.setting.api
+  // 設定 app.setting.api
+  static Future<AppSettingApi> setAppSettingApi(
+      AppSettingApi appSettingApi) async {
+    // 轉換成 json string
+    String jsonString = jsonEncode(appSettingApi.toMap());
+    await saveData<String>('app.setting.api', jsonString);
+    return appSettingApi;
+  }
+
+  // 取得 app.setting.api
+  static Future<AppSettingApi> getAppSettingApi() async {
+    String jsonString = await getData<String>('app.setting.api') ??
+        jsonEncode((await setAppSettingApi(AppSettingApi(apiUrl: ""))).toMap());
+    return AppSettingApi.fromMap(jsonDecode(jsonString))!;
+  }
+
+  // 刪除 app.setting.api
+  static Future<void> removeAppSettingApi() async {
+    await removeData('app.setting.api');
     return;
   }
 

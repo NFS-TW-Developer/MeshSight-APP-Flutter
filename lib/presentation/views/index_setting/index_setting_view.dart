@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
+import 'package:meshsightapp/router/app_router.gr.dart';
 
 import '../../../localization/generated/l10n.dart';
 import '../../widgets/base_expansion_tile.dart';
+import '../../widgets/base_list_tile.dart';
 import '../../widgets/base_list_title.dart';
 import '../../widgets/base_scaffold.dart';
 import '../../widgets/base_switch_list_tile.dart';
@@ -50,29 +52,20 @@ class IndexSettingView extends StatelessWidget {
                   ),
                 ],
               ),
-              /*
               BaseExpansionTile(
-                title: S.current.ApiRegion,
+                title: S.current.ApiUrl,
                 children: [
-                  RadioListTile<String>(
-                    title: const Text('Global'),
-                    value: "global",
-                    groupValue: model.apiRegion,
-                    onChanged: (value) {
-                      model.apiRegionRadioOnChanged(value);
+                  Text(model.appSettingApi.apiUrl ?? ''),
+                  BaseListTile(
+                    title: S.current.Reset,
+                    onTapFunction: () async {
+                      await model.resetAppSettingApi();
+                      AutoRouter.of(context).replaceAll([const IndexRoute()]);
                     },
-                  ),
-                  RadioListTile<String>(
-                    title: const Text('台灣'),
-                    value: "tw",
-                    groupValue: model.apiRegion,
-                    onChanged: (value) {
-                      model.apiRegionRadioOnChanged(value);
-                    },
+                    trailing: const Icon(Icons.arrow_forward_ios),
                   ),
                 ],
               ),
-              */
               BaseListTitle(title: S.current.Map),
               BaseExpansionTile(
                 title: S.current.MapTileRegion,
