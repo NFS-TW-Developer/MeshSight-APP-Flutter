@@ -22,7 +22,7 @@ class AppRouter extends $AppRouter {
           guards: [AuthGuard()],
           children: [
             AutoRoute(
-              path: 'map', page: IndexMapRoute.page,
+              path: '', page: IndexMapRoute.page,
               maintainState: false, // 當路由切換時保持狀態
             ),
             AutoRoute(
