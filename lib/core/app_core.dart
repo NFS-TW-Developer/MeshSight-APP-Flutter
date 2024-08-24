@@ -7,7 +7,6 @@ import '../router/app_router.dart';
 import 'services/app_logging_service.dart';
 import 'services/meshsight_gateway_api_service.dart';
 import 'services/localization_service.dart';
-import 'utils/shared_preferences_util.dart';
 
 final Map<String, dynamic> appConfig = GlobalConfiguration().appConfig;
 final GetIt appLocator = GetIt.instance;
@@ -37,6 +36,8 @@ class AppCore {
   }
 
   static Future<void> appSharedPreferenceChecker() async {
+    // TODO: 等待完善
+    /*
     // api region check
     String apiRegion = await SharedPreferencesUtil.getApiRegion();
     String? baseURL;
@@ -59,5 +60,6 @@ class AppCore {
         mapTile = await SharedPreferencesUtil.getMapTile();
       }
     } while (mapTileName == null);
+    */
   }
 }

@@ -4,9 +4,9 @@ class MapVision {
   final LatLng center;
   final double zoom;
 
-  MapVision({
-    required this.center,
-    required this.zoom,
+  const MapVision({
+    this.center = const LatLng(23.46999, 120.95726), // 預設中心點為玉山
+    this.zoom = 7.5,
   });
 
   Map<String, dynamic> toMap() {

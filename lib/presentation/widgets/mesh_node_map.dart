@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:logging_flutter/logging_flutter.dart';
+import 'package:meshsightapp/core/models/app_setting_map.dart';
 import 'package:meshsightapp/core/utils/app_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,10 +28,11 @@ class MeshNodeMap extends StatefulWidget {
 
 class _MeshNodeMapState extends State<MeshNodeMap>
     with TickerProviderStateMixin {
+  AppSettingMap _appSettingMap = AppSettingMap();
   Map<String, dynamic> _mapCoordinatesData = {}; // 地圖節點資料
   final MapController _mapController = MapController(); // 地圖控制器
   MapVision _currentMapVision =
-      MapVision(center: const LatLng(0, 0), zoom: 0); // 地圖視野
+      const MapVision(center: LatLng(0, 0), zoom: 0); // 地圖視野
   // 是否顯示節點標籤
   bool _showNodeTag = false;
   bool _showNodeCover = false;
@@ -47,11 +49,10 @@ class _MeshNodeMapState extends State<MeshNodeMap>
   @override
   void initState() {
     super.initState();
-    _initializeMap();
-    _loadDeviceImages();
+    _initAll();
     Timer.periodic(const Duration(minutes: 1), (timer) {
       // 每分鐘更新一次資料
-      _initData();
+      _getApiData();
     });
   }
 
@@ -79,21 +80,53 @@ class _MeshNodeMapState extends State<MeshNodeMap>
     );
   }
 
-  Future<void> _initializeMap() async {
+  Future<void> _initAll() async {
+    await _initEnv();
+    await _initMap();
+    await _getApiData();
+  }
+
+  Future<void> _initEnv() async {
+    // _appSettingMap
+    AppSettingMap appSettingMap =
+        await SharedPreferencesUtil.getAppSettingMap();
+    setState(() {
+      _appSettingMap = appSettingMap;
+    });
+    // _meshtasticDeviceImageFiles
+    try {
+      // 讀取 AssetManifest.json 檔案
+      final String manifestContent =
+          await rootBundle.loadString('AssetManifest.json');
+      final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+
+      // 過濾出指定資料夾下的檔案
+      final List<String> meshtasticDeviceImageFiles = manifestMap.keys
+          .where((String key) =>
+              key.startsWith('assets/images/meshtastic/device/'))
+          .toList();
+
+      // 更新檔案列表
+      setState(() {
+        _meshtasticDeviceImageFiles = meshtasticDeviceImageFiles;
+      });
+    } catch (e) {
+      Flogger.e('Failed to load device images: $e');
+    }
+  }
+
+  Future<void> _initMap() async {
     await _initBaseMapChildren();
-    await _setCurrentMapVision(await SharedPreferencesUtil.getMapVision());
+    await _setCurrentMapVision(_appSettingMap.mapVision);
     _goCurrentMapVision(animate: false);
-    await _initData();
   }
 
   Future<void> _initBaseMapChildren() async {
-    bool functionButtonMiniVisibility =
-        await SharedPreferencesUtil.getMapFunctionButtonMiniVisibility();
-    bool scalebarVisibility =
-        await SharedPreferencesUtil.getMapScalebarVisibility();
+    bool functionButtonMiniVisibility = _appSettingMap.miniButton;
+    bool scalebarVisibility = _appSettingMap.scalebarVisible;
 
-    String apiRegion = await SharedPreferencesUtil.getApiRegion();
-    String mapTile = await SharedPreferencesUtil.getMapTile();
+    String tileRegion = _appSettingMap.tileRegion;
+    String tileProvider = _appSettingMap.tileProvider;
 
     List<Widget> baseMapChildren1 = [
       // 地圖底圖
@@ -104,7 +137,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
         child: await _darkModeContainerIfEnabled(
           TileLayer(
             urlTemplate: GlobalConfiguration()
-                .getDeepValue("map:tile:$apiRegion:$mapTile:url"),
+                .getDeepValue("map:tile:$tileRegion:$tileProvider:url"),
             userAgentPackageName:
                 GlobalConfiguration().getDeepValue("map:userAgentPackageName"),
             tileProvider: CancellableNetworkTileProvider(),
@@ -129,7 +162,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
           children: [
             FloatingActionButton(
               mini: functionButtonMiniVisibility,
-              onPressed: _initData,
+              onPressed: _getApiData,
               backgroundColor: Colors.blue,
               child: const Icon(Icons.restart_alt),
             ),
@@ -164,11 +197,11 @@ class _MeshNodeMapState extends State<MeshNodeMap>
             textStyle: TextStyle(fontSize: 8),
           ),
           TextSourceAttribution(
-            GlobalConfiguration()
-                .getDeepValue("map:tile:$apiRegion:$mapTile:copyrightName"),
+            GlobalConfiguration().getDeepValue(
+                "map:tile:$tileRegion:$tileProvider:copyrightName"),
             onTap: () async {
-              await launchUrl(Uri.parse(GlobalConfiguration()
-                  .getDeepValue("map:tile:$apiRegion:$mapTile:copyrightUrl")));
+              await launchUrl(Uri.parse(GlobalConfiguration().getDeepValue(
+                  "map:tile:$tileRegion:$tileProvider:copyrightUrl")));
             },
           ),
         ],
@@ -182,17 +215,16 @@ class _MeshNodeMapState extends State<MeshNodeMap>
   }
 
   // 初始化數據
-  Future<void> _initData() async {
+  Future<void> _getApiData() async {
     try {
       setState(() {
         _mapCoordinatesData = {};
       });
       await _generateShowMapChildren();
       DateTime now = DateTime.now();
-      int mapNodeMaxAgeInHours =
-          await SharedPreferencesUtil.getMapNodeMaxAgeInHours();
+      int mapNodeMaxAgeInHours = _appSettingMap.nodeMaxAgeInHours;
       int mapNodeNeighborMaxAgeInHours =
-          await SharedPreferencesUtil.getMapNodeNeighborMaxAgeInHours();
+          _appSettingMap.nodeNeighborMaxAgeInHours;
       Map<String, dynamic>? data =
           await appLocator<MeshsightGatewayApiService>().mapCoordinates(
         start: now.subtract(Duration(hours: mapNodeMaxAgeInHours)),
@@ -213,28 +245,6 @@ class _MeshNodeMapState extends State<MeshNodeMap>
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.toString())),
       );
-    }
-  }
-
-  Future<void> _loadDeviceImages() async {
-    try {
-      // 讀取 AssetManifest.json 檔案
-      final String manifestContent =
-          await rootBundle.loadString('AssetManifest.json');
-      final Map<String, dynamic> manifestMap = json.decode(manifestContent);
-
-      // 過濾出指定資料夾下的檔案
-      final List<String> meshtasticDeviceImageFiles = manifestMap.keys
-          .where((String key) =>
-              key.startsWith('assets/images/meshtastic/device/'))
-          .toList();
-
-      // 更新檔案列表
-      setState(() {
-        _meshtasticDeviceImageFiles = meshtasticDeviceImageFiles;
-      });
-    } catch (e) {
-      Flogger.e('Failed to load device images: $e');
     }
   }
 
@@ -259,7 +269,11 @@ class _MeshNodeMapState extends State<MeshNodeMap>
       _showNodeCover = vision.zoom >= 10.0;
       _showNodeLine = vision.zoom >= 11.0;
     });
-    await SharedPreferencesUtil.setMapVision(vision);
+    AppSettingMap appSettingMap = await SharedPreferencesUtil.setAppSettingMap(
+        _appSettingMap.copyWith(mapVision: vision));
+    setState(() {
+      _appSettingMap = appSettingMap;
+    });
   }
 
   void _goCurrentMapVision({bool animate = true}) {
@@ -352,8 +366,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
     }
 
     // 產生節點連線
-    if (_showNodeLine &&
-        await SharedPreferencesUtil.getMapNodeLineVisibility()) {
+    if (_showNodeLine && _appSettingMap.lineVisible) {
       List<dynamic> nodeLine = _mapCoordinatesData['nodeLine'];
       for (var line in nodeLine) {
         Map<String, dynamic>? nodeA = _mapCoordinatesData['items'].firstWhere(
@@ -381,8 +394,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
     }
 
     // 產生節點覆蓋
-    if (_showNodeCover &&
-        await SharedPreferencesUtil.getMapNodeCoverVisibility()) {
+    if (_showNodeCover && _appSettingMap.coverVisible) {
       List<dynamic> nodeCoverage = _mapCoordinatesData['nodeCoverage'];
       for (var coverage in nodeCoverage) {
         Map<String, dynamic>? nodeA = _mapCoordinatesData['items'].firstWhere(
@@ -609,9 +621,8 @@ class _MeshNodeMapState extends State<MeshNodeMap>
   // 產生節點標記
   Future<Marker> _generateNodeMarker(LatLng point, int precisionInMeters,
       int nodeId, String shortName, DateTime updateAt) async {
-    int nodeMarkSize = await SharedPreferencesUtil.getMapNodeMarkSize();
-    bool nodeMarkNameVisibility =
-        await SharedPreferencesUtil.getMapNodeMarkNameVisibility();
+    int nodeMarkSize = _appSettingMap.nodeMarkSize;
+    bool nodeMarkNameVisibility = _appSettingMap.nodeMarkNameVisible;
     return Marker(
       point: point,
       width: nodeMarkSize.toDouble(),
@@ -965,7 +976,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
   }
 
   Future<Widget> _darkModeContainerIfEnabled(Widget child) async {
-    if (!await SharedPreferencesUtil.getMapDarkMode()) return child;
+    if (!_appSettingMap.darkMode) return child;
     if (!mounted) return child;
     return darkModeTilesContainerBuilder(context, child);
   }

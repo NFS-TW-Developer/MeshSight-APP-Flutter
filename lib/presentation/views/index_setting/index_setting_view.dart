@@ -33,7 +33,7 @@ class IndexSettingView extends StatelessWidget {
                     value: const Locale('en'),
                     groupValue: model.currentLocale,
                     onChanged: (value) {
-                      model.currentLocaleRadioOnChanged(value);
+                      model.setCurrentLocale(value);
                     },
                   ),
                   RadioListTile<Locale>(
@@ -45,11 +45,12 @@ class IndexSettingView extends StatelessWidget {
                     ),
                     groupValue: model.currentLocale,
                     onChanged: (value) {
-                      model.currentLocaleRadioOnChanged(value);
+                      model.setCurrentLocale(value);
                     },
                   ),
                 ],
               ),
+              /*
               BaseExpansionTile(
                 title: S.current.ApiRegion,
                 children: [
@@ -71,21 +72,44 @@ class IndexSettingView extends StatelessWidget {
                   ),
                 ],
               ),
+              */
               BaseListTitle(title: S.current.Map),
               BaseExpansionTile(
-                title: S.current.MapTile,
+                title: S.current.MapTileRegion,
                 children: List.generate(
-                  model.mapTileList.length,
+                  model.mapTileRegionList.length,
+                  (index) {
+                    String tileName = model.mapTileRegionList[index];
+                    return RadioListTile<String>(
+                      title: Text(tileName),
+                      value: model.mapTileRegionList[index],
+                      groupValue: model.appSettingMap.tileRegion,
+                      onChanged: (value) {
+                        model.setAppSettingMap(
+                          model.appSettingMap.copyWith(
+                              tileRegion: value, tileProvider: 'default'),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+              BaseExpansionTile(
+                title: S.current.MapTileProvider,
+                children: List.generate(
+                  model.mapTileProviderList.length,
                   (index) {
                     String? tileName = GlobalConfiguration().getDeepValue(
-                        "map:tile:${model.apiRegion}:${model.mapTileList[index]}:name");
+                        "map:tile:${model.appSettingMap.tileRegion}:${model.mapTileProviderList[index]}:name");
                     tileName ??= 'Unknown';
                     return RadioListTile<String>(
                       title: Text(tileName),
-                      value: model.mapTileList[index],
-                      groupValue: model.mapTile,
+                      value: model.mapTileProviderList[index],
+                      groupValue: model.appSettingMap.tileProvider,
                       onChanged: (value) {
-                        model.mapTileRadioOnChanged(value);
+                        model.setAppSettingMap(
+                          model.appSettingMap.copyWith(tileProvider: value),
+                        );
                       },
                     );
                   },
@@ -93,51 +117,65 @@ class IndexSettingView extends StatelessWidget {
               ),
               BaseSwitchListTile(
                 title: S.current.MapDarkMode,
-                value: model.mapDarkMode,
+                value: model.appSettingMap.darkMode,
                 onChangedFunction: (value) {
-                  model.mapDarkModeSwitchOnChanged(value);
+                  model.setAppSettingMap(
+                    model.appSettingMap.copyWith(darkMode: value),
+                  );
                 },
               ),
               BaseSwitchListTile(
                 title: S.current.MapScalebar,
-                value: model.mapScalebarVisibility,
+                value: model.appSettingMap.scalebarVisible,
                 onChangedFunction: (value) {
-                  model.mapScalebarVisibilitySwitchOnChanged(value);
+                  model.setAppSettingMap(
+                    model.appSettingMap.copyWith(scalebarVisible: value),
+                  );
                 },
               ),
               BaseSwitchListTile(
                 title: S.current.MapFunctionButtonMini,
-                value: model.mapFunctionButtonMiniVisibility,
+                value: model.appSettingMap.miniButton,
                 onChangedFunction: (value) {
-                  model.mapFunctionButtonMiniVisibilitySwitchOnChanged(value);
+                  model.setAppSettingMap(
+                    model.appSettingMap.copyWith(miniButton: value),
+                  );
                 },
               ),
               BaseSwitchListTile(
                 title: S.current.MapNodeLine,
-                value: model.mapNodeLineVisibility,
+                value: model.appSettingMap.lineVisible,
                 onChangedFunction: (value) {
-                  model.mapNodeLineVisibilitySwitchOnChanged(value);
+                  model.setAppSettingMap(
+                    model.appSettingMap.copyWith(lineVisible: value),
+                  );
                 },
               ),
               BaseSwitchListTile(
                 title: S.current.MapNodeCover,
-                value: model.mapNodeCoverVisibility,
+                value: model.appSettingMap.coverVisible,
                 onChangedFunction: (value) {
-                  model.mapNodeCoverVisibilitySwitchOnChanged(value);
+                  model.setAppSettingMap(
+                    model.appSettingMap.copyWith(coverVisible: value),
+                  );
                 },
               ),
               BaseExpansionTile(
                 title: S.current.MapNodeMaxAge,
                 children: [
                   Slider(
-                    value: model.mapNodeMaxAgeInHours.toDouble(),
+                    value: model.appSettingMap.nodeMaxAgeInHours.toDouble(),
                     min: 1,
                     max: 36,
                     divisions: 35,
                     label:
-                        "${model.mapNodeMaxAgeInHours.toString()} ${S.current.Hour}",
+                        "${model.appSettingMap.nodeMaxAgeInHours.toString()} ${S.current.Hour}",
                     onChanged: (value) {
-                      model.mapNodeMaxAgeInHoursSliderOnChanged(value.toInt());
+                      model.setAppSettingMap(
+                        model.appSettingMap.copyWith(
+                          nodeMaxAgeInHours: value.toInt(),
+                        ),
+                      );
                     },
                   ),
                 ],
@@ -146,15 +184,19 @@ class IndexSettingView extends StatelessWidget {
                 title: S.current.MapNodeNeighborMaxAge,
                 children: [
                   Slider(
-                    value: model.mapNodeNeighborMaxAgeInHours.toDouble(),
+                    value: model.appSettingMap.nodeNeighborMaxAgeInHours
+                        .toDouble(),
                     min: 1,
                     max: 6,
                     divisions: 5,
                     label:
-                        "${model.mapNodeNeighborMaxAgeInHours.toString()} ${S.current.Hour}",
+                        "${model.appSettingMap.nodeNeighborMaxAgeInHours.toString()} ${S.current.Hour}",
                     onChanged: (value) {
-                      model.mapNodeNeighborMaxAgeInHoursSliderOnChanged(
-                          value.toInt());
+                      model.setAppSettingMap(
+                        model.appSettingMap.copyWith(
+                          nodeNeighborMaxAgeInHours: value.toInt(),
+                        ),
+                      );
                     },
                   ),
                 ],
@@ -171,7 +213,7 @@ class IndexSettingView extends StatelessWidget {
                         Icon(
                           Icons.location_on,
                           size: 40 / 2,
-                          color: (model.mapNodeMarkSize == 40)
+                          color: (model.appSettingMap.nodeMarkSize == 40)
                               ? Colors.green
                               : Colors.grey,
                           shadows: const [
@@ -186,7 +228,7 @@ class IndexSettingView extends StatelessWidget {
                         Icon(
                           Icons.location_on,
                           size: 64 / 2,
-                          color: (model.mapNodeMarkSize == 64)
+                          color: (model.appSettingMap.nodeMarkSize == 64)
                               ? Colors.green
                               : Colors.grey,
                           shadows: const [
@@ -201,7 +243,7 @@ class IndexSettingView extends StatelessWidget {
                         Icon(
                           Icons.location_on,
                           size: 88 / 2,
-                          color: (model.mapNodeMarkSize == 88)
+                          color: (model.appSettingMap.nodeMarkSize == 88)
                               ? Colors.green
                               : Colors.grey,
                           shadows: const [
@@ -216,22 +258,26 @@ class IndexSettingView extends StatelessWidget {
                     ),
                   ),
                   Slider(
-                    value: model.mapNodeMarkSize.toDouble(),
+                    value: model.appSettingMap.nodeMarkSize.toDouble(),
                     min: 40,
                     max: 88,
                     divisions: 2,
                     // label: model.mapNodeMarkSize.toString(),
                     onChanged: (value) {
-                      model.mapNodeMarkSizeSliderOnChanged(value.toInt());
+                      model.setAppSettingMap(model.appSettingMap.copyWith(
+                        nodeMarkSize: value.toInt(),
+                      ));
                     },
                   ),
                 ],
               ),
               BaseSwitchListTile(
                 title: S.current.MapNodeMarkName,
-                value: model.mapNodeMarkNameVisibility,
+                value: model.appSettingMap.nodeMarkNameVisible,
                 onChangedFunction: (value) {
-                  model.mapNodeMarkNameVisibilitySwitchOnChanged(value);
+                  model.setAppSettingMap(
+                    model.appSettingMap.copyWith(nodeMarkNameVisible: value),
+                  );
                 },
               ),
             ],

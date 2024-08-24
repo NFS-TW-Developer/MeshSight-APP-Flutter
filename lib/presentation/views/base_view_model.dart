@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/app_core.dart';
@@ -18,14 +17,14 @@ class BaseViewModel extends ChangeNotifier {
   BuildContext get context => _context;
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     _disposed = true;
   }
 
   @override
-  void notifyListeners(){
-    if(!disposed) super.notifyListeners();
+  void notifyListeners() {
+    if (!disposed) super.notifyListeners();
   }
 
   void setBusy(bool value) {

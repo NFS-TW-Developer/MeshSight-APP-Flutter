@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'package:latlong2/latlong.dart';
+import 'package:meshsightapp/core/models/app_setting_map.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../models/map_vision.dart';
 
 class SharedPreferencesUtil {
   /*
@@ -143,302 +141,6 @@ class SharedPreferencesUtil {
     return;
   }
 
-  /// map
-  // map.vision
-  // 設定 map.vision
-  static Future<void> setMapVision(MapVision vision) async {
-    // 轉換成 json string
-    String jsonString = jsonEncode(vision.toMap());
-    await saveData<String>('map.vision', jsonString);
-    return;
-  }
-
-  // 取得 map.vision
-  static Future<MapVision> getMapVision() async {
-    String? jsonString = await getData<String>('map.vision');
-    // 如果沒有設定過，則給一個預設值並儲存
-    if (jsonString == null) {
-      // 預設值
-      // 先取得 API 地區
-      String apiRegion = await getApiRegion();
-      // 根據 API 地區設定預設中心點
-      MapVision vision;
-      switch (apiRegion) {
-        case "tw":
-          vision = MapVision(
-            center: const LatLng(23.46999, 120.95726), // 預設中心點為玉山
-            zoom: 7.5,
-          );
-          break;
-        case "global":
-        default:
-          vision = MapVision(
-            center: const LatLng(0, 0), // 預設中心點為 0, 0
-            zoom: 1,
-          );
-          break;
-      }
-      await setMapVision(vision);
-      jsonString = jsonEncode(vision.toMap());
-    }
-    // 轉換成 Map<String, dynamic>
-    Map<String, dynamic> map = jsonDecode(jsonString);
-    MapVision result = MapVision.fromMap(map)!;
-    return result;
-  }
-
-  // 刪除 map.vision
-  static Future<void> removeMapVision() async {
-    await removeData('map.vision');
-    return;
-  }
-
-  // map.nodeLineVisibility
-  // 設定 map.nodeLineVisibility
-  static Future<void> setMapNodeLineVisibility(bool nodeLineVisibility) async {
-    await saveData<bool>('map.nodeLineVisibility', nodeLineVisibility);
-    return;
-  }
-
-  // 取得 map.nodeLineVisibility
-  static Future<bool> getMapNodeLineVisibility() async {
-    bool? result = await getData<bool>('map.nodeLineVisibility');
-    // 如果沒有設定過，則給一個預設值並儲存
-    if (result == null) {
-      result = false; // 預設值
-      await setMapNodeLineVisibility(result);
-    }
-    return result;
-  }
-
-  // 刪除 map.nodeLineVisibility
-  static Future<void> removeMapNodeLineVisibility() async {
-    await removeData('map.nodeLineVisibility');
-    return;
-  }
-
-  // map.nodeCoverVisibility
-  // 設定 map.nodeCoverVisibility
-  static Future<void> setMapNodeCoverVisibility(
-      bool nodeCoverVisibility) async {
-    await saveData<bool>('map.nodeCoverVisibility', nodeCoverVisibility);
-    return;
-  }
-
-  // 取得 map.nodeCoverVisibility
-  static Future<bool> getMapNodeCoverVisibility() async {
-    bool? result = await getData<bool>('map.nodeCoverVisibility');
-    // 如果沒有設定過，則給一個預設值並儲存
-    if (result == null) {
-      result = false; // 預設值
-      await setMapNodeCoverVisibility(result);
-    }
-    return result;
-  }
-
-  // 刪除 map.nodeCoverVisibility
-  static Future<void> removeMapNodeCoverVisibility() async {
-    await removeData('map.nodeCoverVisibility');
-    return;
-  }
-
-  // map.scalebarVisibility
-  // 設定 map.scalebarVisibility
-  static Future<void> setMapScalebarVisibility(bool scalebarVisibility) async {
-    await saveData<bool>('map.scalebarVisibility', scalebarVisibility);
-    return;
-  }
-
-  // 取得 map.scalebarVisibility
-  static Future<bool> getMapScalebarVisibility() async {
-    bool? result = await getData<bool>('map.scalebarVisibility');
-    // 如果沒有設定過，則給一個預設值並儲存
-    if (result == null) {
-      result = true; // 預設值
-      await setMapScalebarVisibility(result);
-    }
-    return result;
-  }
-
-  // 刪除 map.scalebarVisibility
-  static Future<void> removeMapScalebarVisibility() async {
-    await removeData('map.scalebarVisibility');
-    return;
-  }
-
-  // map.darkMode
-  // 設定 map.darkMode
-  static Future<void> setMapDarkMode(bool darkMode) async {
-    await saveData<bool>('map.darkMode', darkMode);
-    return;
-  }
-
-  // 取得 map.darkMode
-  static Future<bool> getMapDarkMode() async {
-    bool? result = await getData<bool>('map.darkMode');
-    // 如果沒有設定過，則給一個預設值並儲存
-    if (result == null) {
-      result = false; // 預設值
-      await setMapDarkMode(result);
-    }
-    return result;
-  }
-
-  // 刪除 map.darkMode
-  static Future<void> removeMapDarkMode() async {
-    await removeData('map.darkMode');
-    return;
-  }
-
-  // map.nodeMaxAgeInHours
-  // 設定 map.nodeMaxAgeInHours
-  static Future<void> setMapNodeMaxAgeInHours(int nodeMaxAgeInHours) async {
-    await saveData<int>('map.nodeMaxAgeInHours', nodeMaxAgeInHours);
-    return;
-  }
-
-  // 取得 map.nodeMaxAgeInHours
-  static Future<int> getMapNodeMaxAgeInHours() async {
-    int? result = await getData<int>('map.nodeMaxAgeInHours');
-    // 如果沒有設定過，則給一個預設值並儲存
-    if (result == null) {
-      result = 24; // 預設值
-      await setMapNodeMaxAgeInHours(result);
-    }
-    return result;
-  }
-
-  // 刪除 map.nodeMaxAgeInHours
-  static Future<void> removeMapNodeMaxAgeInHours() async {
-    await removeData('map.nodeMaxAgeInHours');
-    return;
-  }
-
-  // map.nodeNeighborMaxAgeInHours
-  // 設定 map.nodeNeighborMaxAgeInHours
-  static Future<void> setMapNodeNeighborMaxAgeInHours(
-      int nodeNeighborMaxAgeInHours) async {
-    await saveData<int>(
-        'map.nodeNeighborMaxAgeInHours', nodeNeighborMaxAgeInHours);
-    return;
-  }
-
-  // 取得 map.nodeNeighborMaxAgeInHours
-  static Future<int> getMapNodeNeighborMaxAgeInHours() async {
-    int? result = await getData<int>('map.nodeNeighborMaxAgeInHours');
-    // 如果沒有設定過，則給一個預設值並儲存
-    if (result == null) {
-      result = 1; // 預設值
-      await setMapNodeNeighborMaxAgeInHours(result);
-    }
-    return result;
-  }
-
-  // 刪除 map.nodeNeighborMaxAgeInHours
-  static Future<void> removeMapNodeNeighborMaxAgeInHours() async {
-    await removeData('map.nodeNeighborMaxAgeInHours');
-    return;
-  }
-
-  // map.nodeMarkSize
-  // 設定 map.nodeMarkSize
-  static Future<void> setMapNodeMarkSize(int nodeMarkSize) async {
-    await saveData<int>('map.nodeMarkSize', nodeMarkSize);
-    return;
-  }
-
-  // 取得 map.nodeMarkSize
-  static Future<int> getMapNodeMarkSize() async {
-    int? result = await getData<int>('map.nodeMarkSize');
-    // 如果沒有設定過，則給一個預設值並儲存
-    if (result == null) {
-      result = 64; // 預設值
-      await setMapNodeMarkSize(result);
-    }
-    return result;
-  }
-
-  // 刪除 map.nodeMarkSize
-  static Future<void> removeMapNodeMarkSize() async {
-    await removeData('map.nodeMarkSize');
-    return;
-  }
-
-  // map.nodeMarkNameVisibility
-  // 設定 map.nodeMarkNameVisibility
-  static Future<void> setMapNodeMarkNameVisibility(
-      bool nodeMarkNameVisibility) async {
-    await saveData<bool>('map.nodeMarkNameVisibility', nodeMarkNameVisibility);
-    return;
-  }
-
-  // 取得 map.nodeMarkNameVisibility
-  static Future<bool> getMapNodeMarkNameVisibility() async {
-    bool? result = await getData<bool>('map.nodeMarkNameVisibility');
-    // 如果沒有設定過，則給一個預設值並儲存
-    if (result == null) {
-      result = true; // 預設值
-      await setMapNodeMarkNameVisibility(result);
-    }
-    return result;
-  }
-
-  // 刪除 map.nodeMarkNameVisibility
-  static Future<void> removeMapNodeMarkNameVisibility() async {
-    await removeData('map.nodeMarkNameVisibility');
-    return;
-  }
-
-  // map.functionButtonMiniVisibility
-  // 設定 map.functionButtonMiniVisibility
-  static Future<void> setMapFunctionButtonMiniVisibility(
-      bool functionButtonMiniVisibility) async {
-    await saveData<bool>(
-        'map.functionButtonMiniVisibility', functionButtonMiniVisibility);
-    return;
-  }
-
-  // 取得 map.functionButtonMiniVisibility
-  static Future<bool> getMapFunctionButtonMiniVisibility() async {
-    bool? result = await getData<bool>('map.functionButtonMiniVisibility');
-    // 如果沒有設定過，則給一個預設值並儲存
-    if (result == null) {
-      result = false; // 預設值
-      await setMapFunctionButtonMiniVisibility(result);
-    }
-    return result;
-  }
-
-  // 刪除 map.functionButtonMiniVisibility
-  static Future<void> removeMapFunctionButtonMiniVisibility() async {
-    await removeData('map.functionButtonMiniVisibility');
-    return;
-  }
-
-  // map.tile
-  // 設定 map.tile
-  static Future<void> setMapTile(String tileName) async {
-    await saveData<String>('map.tile', tileName);
-    return;
-  }
-
-  // 取得 map.tile
-  static Future<String> getMapTile() async {
-    String? result = await getData<String>('map.tile');
-    // 如果沒有設定過，則給一個預設值並儲存
-    if (result == null) {
-      result = "default"; // 預設值
-      await setMapTile(result);
-    }
-    return result;
-  }
-
-  // 刪除 map.tile
-  static Future<void> removeMapTile() async {
-    await removeData('map.tile');
-    return;
-  }
-
   // app.apiRegion
   // 設定 app.apiRegion
   static Future<void> setApiRegion(String apiRegion) async {
@@ -461,6 +163,29 @@ class SharedPreferencesUtil {
   // 刪除 app.apiRegion
   static Future<void> removeApiRegion() async {
     await removeData('app.apiRegion');
+    return;
+  }
+
+  // app.setting.map
+  // 設定 app.setting.map
+  static Future<AppSettingMap> setAppSettingMap(
+      AppSettingMap appSettingMap) async {
+    // 轉換成 json string
+    String jsonString = jsonEncode(appSettingMap.toMap());
+    await saveData<String>('app.setting.map', jsonString);
+    return appSettingMap;
+  }
+
+  // 取得 app.setting.map
+  static Future<AppSettingMap> getAppSettingMap() async {
+    String jsonString = await getData<String>('app.setting.map') ??
+        jsonEncode((await setAppSettingMap(AppSettingMap())).toMap());
+    return AppSettingMap.fromMap(jsonDecode(jsonString))!;
+  }
+
+  // 刪除 app.setting.map
+  static Future<void> removeAppSettingMap() async {
+    await removeData('app.setting.map');
     return;
   }
 }
