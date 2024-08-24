@@ -1,7 +1,7 @@
 name: meshsightapp
 description: "MeshSight APP"
 publish_to: "none"
-version: 0.2.0+240823611
+version: 0.3.0+240824235
 environment:
   sdk: ">=3.4.4 <4.0.0"
 dependencies:
