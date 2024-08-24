@@ -18,6 +18,7 @@ class IndexView extends StatelessWidget {
       builder: (context, model, child) {
         return AutoTabsScaffold(
             routes: const [
+              IndexAnalysisRoute(),
               IndexMapRoute(),
               IndexSettingRoute(),
             ],
@@ -26,6 +27,10 @@ class IndexView extends StatelessWidget {
                 currentIndex: tabsRouter.activeIndex,
                 onTap: tabsRouter.setActiveIndex,
                 items: [
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.analytics),
+                    label: S.current.Analysis,
+                  ),
                   BottomNavigationBarItem(
                     icon: const Icon(Icons.map),
                     label: S.current.Map,

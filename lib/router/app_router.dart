@@ -26,6 +26,10 @@ class AppRouter extends $AppRouter {
               maintainState: false, // 當路由切換時保持狀態
             ),
             AutoRoute(
+              path: 'analysis', page: IndexAnalysisRoute.page,
+              maintainState: false, // 當路由切換時保持狀態
+            ),
+            AutoRoute(
               path: 'setting', page: IndexSettingRoute.page,
               maintainState: false, // 當路由切換時保持狀態
             ),

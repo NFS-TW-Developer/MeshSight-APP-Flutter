@@ -17,7 +17,7 @@ class IndexViewModel extends BaseViewModel {
             content: Column(
               children: [
                 Text(S.current.DevelopAlertContent),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextButton(
                   onPressed: () {
                     launchUrl(Uri.parse(

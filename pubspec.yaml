@@ -36,6 +36,7 @@ dependencies:
   latlong2: ^0.9.1
   auto_size_text: ^3.0.0
   particles_fly: ^0.0.9
+  fl_chart: ^0.68.0
 dev_dependencies:
   auto_route_generator: ^8.0.0
   build_runner:
