@@ -51,7 +51,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
     _loadDeviceImages();
     Timer.periodic(const Duration(minutes: 1), (timer) {
       // 每分鐘更新一次資料
-      //_initData();
+      _initData();
     });
   }
 
