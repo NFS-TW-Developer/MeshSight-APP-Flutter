@@ -1,5 +1,6 @@
 {
     "@@locale": "zh_Hant_TW",
+    "AcceptAlertAndStart": "同意警告並繼續",
     "Altitude": "海拔",
     "Api": "API",
     "ApiErrorMsg1": "API 連線錯誤，請稍候再重新嘗試。",
@@ -61,5 +62,7 @@
     "Via": "via",
     "WelcomeTitle": "歡迎使用 MeshSight APP",
     "WelcomeContent": "您可以透過 MeshSight APP 輕鬆地以視覺化方式查看節點資訊。\n在開始之前，請先輸入您建立的 MeshSight API 網址。如果您沒有自己建立的 MeshSight API，可以嘗試使用我們提供的 Demo API Server。",
+    "WelcomeAlert1": "警告！ MeshSight APP 中顯示的所有內容均由 API Server 提供，您可以自行架設 API Server，以完全掌控顯示的數據。我們所提供的 Demo API Server 內容來源於網際網路上的公開資訊，僅作為展示用途。然而，若您的 Meshtastic 裝置設定導致其暴露於網際網路，您的節點資訊可能會因此公開，從而引發潛在的隱私風險。\n\n為保護您的隱私和數據安全，我們強烈建議您調整 Meshtastic 裝置的設定，確保您的節點資訊不會被意外公開。此外，使用私人或自建的 API Server 也可進一步降低潛在的隱私風險。\n\n聲明： 我們對任何公開資料的安全性、準確性或完整性不承擔任何責任。所有資料的公開與安全風險均由使用者自行承擔。",
+    "WelcomeAlert2": "This project is not affiliated with or endorsed by the Meshtastic project.\n\nThe Meshtastic logo is the trademark of Meshtastic LLC.", 
     "Z": "Z"
 }
