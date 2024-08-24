@@ -66,6 +66,11 @@ class IndexSettingView extends StatelessWidget {
                   ),
                 ],
               ),
+              BaseListTile(
+                title:
+                    "${model.globalViewModel.appInfo.version} (${model.globalViewModel.appInfo.buildNumber})",
+                onTapFunction: () {},
+              ),
               BaseListTitle(title: S.current.Map),
               BaseExpansionTile(
                 title: S.current.MapTileRegion,
