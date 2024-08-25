@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
+import 'package:flutter_map_marker_cluster_2/flutter_map_marker_cluster.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:latlong2/latlong.dart';
@@ -451,11 +452,42 @@ class _MeshNodeMapState extends State<MeshNodeMap>
       ),
     );
     showMapChildren.add(
-      MarkerLayer(
-        markers: nodeMarker,
+      MarkerClusterLayerWidget(
+        options: MarkerClusterLayerOptions(
+          showPolygon: false,
+          maxClusterRadius: 45,
+          size: const Size(64, 64),
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(32),
+          maxZoom: 15,
+          markers: nodeMarker,
+          builder: (context, markers) {
+            return Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    markers.length < 50
+                        ? Colors.green
+                        : markers.length < 100
+                            ? Colors.orange
+                            : Colors.red,
+                    Colors.transparent,
+                  ],
+                  stops: const [0.5, 1.0],
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  markers.length.toString(),
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
-    // showMapChildren.addAll(nodeChildren);
     showMapChildren.addAll(_baseMapChildren2);
     setState(() {
       _showMapChildren = showMapChildren;
