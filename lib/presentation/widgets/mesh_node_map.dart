@@ -262,10 +262,17 @@ class _MeshNodeMapState extends State<MeshNodeMap>
   Future<void> _onMapEvent(MapEvent event) async {
     switch (event) {
       case MapEventScrollWheelZoom():
-      case MapEventMoveEnd():
         await _setCurrentMapVision(MapVision(
             center: _mapController.camera.center,
             zoom: _mapController.camera.zoom));
+        await _generateShowMapChildren();
+        break;
+      case MapEventMove():
+        _setCurrentMapVision(MapVision(
+            center: _mapController.camera.center,
+            zoom: _mapController.camera.zoom));
+        break;
+      case MapEventMoveEnd():
         await _generateShowMapChildren();
         break;
       default:
@@ -455,12 +462,10 @@ class _MeshNodeMapState extends State<MeshNodeMap>
       MarkerClusterLayerWidget(
         options: MarkerClusterLayerOptions(
           showPolygon: false,
-          maxClusterRadius: 45,
-          size: const Size(64, 64),
           alignment: Alignment.center,
           padding: const EdgeInsets.all(32),
-          maxZoom: 15,
           markers: nodeMarker,
+          centerMarkerOnClick: false,
           builder: (context, markers) {
             return Container(
               decoration: BoxDecoration(
