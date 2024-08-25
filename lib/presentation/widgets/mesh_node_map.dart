@@ -792,6 +792,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
         orElse: () => 'assets/images/meshtastic/device/0.default.png');
 
     var textSizeGroup1 = AutoSizeGroup();
+    var textSizeGroup2 = AutoSizeGroup();
 
     showDialog(
       context: context,
@@ -835,6 +836,236 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
+
+                  Table(
+                    border: TableBorder(
+                      horizontalInside: BorderSide(
+                        color: Colors.grey[500]!,
+                        width: 1,
+                      ),
+                    ),
+                    children: [
+                      TableRow(
+                        children: [
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: AutoSizeText('#', group: textSizeGroup2),
+                            ),
+                          ),
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: AutoSizeText('#', group: textSizeGroup2),
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (nodeInfo?['hardware'] != null) ...[
+                        TableRow(
+                          children: [
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText('📟${S.current.Hardware}',
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText(nodeInfo?['hardware'],
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      if (nodeInfo?['firmware'] != null) ...[
+                        TableRow(
+                          children: [
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText('🔧${S.current.Firmware}',
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText(nodeInfo?['firmware'],
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      if (nodeInfo?['role'] != null) ...[
+                        TableRow(
+                          children: [
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText('🎭${S.current.Role}',
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText(nodeInfo?['role'],
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      if (nodeInfo?['isLicensed'] != null) ...[
+                        TableRow(
+                          children: [
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText('📜${S.current.IsLicensed}',
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText(
+                                    "${nodeInfo?['isLicensed']}",
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      if (nodeInfo?['loraRegion'] != null) ...[
+                        TableRow(
+                          children: [
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText('🌍${S.current.LoraRegion}',
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText(nodeInfo?['loraRegion'],
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      if (nodeInfo?['loraModemPreset'] != null) ...[
+                        TableRow(
+                          children: [
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText(
+                                    '📡${S.current.LoraModemPreset}',
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText(
+                                    nodeInfo?['loraModemPreset'],
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      if (nodeInfo?['hasDefaultChannel'] != null) ...[
+                        TableRow(
+                          children: [
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText(
+                                    '📻${S.current.HasDefaultChannel}',
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText(
+                                    "${nodeInfo?['hasDefaultChannel']}",
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      if (nodeInfo?['numOnlineLocalNodes'] != null) ...[
+                        TableRow(
+                          children: [
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText(
+                                    '🕸️${S.current.NumOnlineLocalNodes}',
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: AutoSizeText(
+                                    "${nodeInfo?['numOnlineLocalNodes']}",
+                                    group: textSizeGroup2),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ],
+                  ),
                   const Divider(),
                   // 顯示裝置定位資訊
                   Center(
@@ -856,9 +1087,11 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                         "❓${S.current.LocationPrecision}: ±${nodePositions[0]['precisionInMeters']} m"),
                   ],
                   Table(
-                    border: TableBorder.all(
-                      color: Colors.grey[500]!,
-                      width: 1,
+                    border: TableBorder(
+                      horizontalInside: BorderSide(
+                        color: Colors.grey[500]!,
+                        width: 1,
+                      ),
                     ),
                     children: [
                       TableRow(
@@ -920,14 +1153,22 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                                       AutoSizeText('self',
                                           group: textSizeGroup1),
                                     ] else ...[
-                                      IconButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            _longPressNodeMarker(x['viaId']);
-                                          },
-                                          icon: const Icon(Icons.location_pin)),
-                                      AutoSizeText(x['viaIdHex'],
-                                          group: textSizeGroup1),
+                                      Column(
+                                        children: [
+                                          IconButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                _longPressNodeMarker(
+                                                    x['viaId']);
+                                              },
+                                              icon: const Icon(
+                                                Icons.location_pin,
+                                                size: 16,
+                                              )),
+                                          AutoSizeText(x['viaIdHex'],
+                                              group: textSizeGroup1),
+                                        ],
+                                      )
                                     ],
                                   ],
                                 ),
