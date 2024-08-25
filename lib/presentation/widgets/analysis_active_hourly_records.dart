@@ -120,7 +120,7 @@ class AnalysisActiceHourlyRecordsState
 
   Widget _bottomTitles(double value, TitleMeta meta) {
     const style = TextStyle(fontSize: 10);
-    String timestamp = _apiData['items'][value.toInt()]['timestamp'];
+    String timestamp = _apiData['items']?[value.toInt()]['timestamp'] ?? '';
     DateTime dateTime = DateTime.parse(timestamp).toLocal();
     return SideTitleWidget(
       axisSide: meta.axisSide,

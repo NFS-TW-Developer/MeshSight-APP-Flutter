@@ -17,7 +17,7 @@ class AnalysisDistribution extends StatefulWidget {
 }
 
 class AnalysisDistributionState extends State<AnalysisDistribution> {
-  late Map<String, dynamic> _apiData; // API data
+  Map<String, dynamic> _apiData = {}; // API data
   List<String> _meshtasticDeviceImageFiles = [];
 
   @override
@@ -35,7 +35,7 @@ class AnalysisDistributionState extends State<AnalysisDistribution> {
       spacing: 16,
       runSpacing: 16,
       children: List<Widget>.generate(
-        _apiData['items']?.length,
+        _apiData['items']?.length ?? 0,
         (index) {
           Map<String, dynamic> item = _apiData['items'][index];
 
