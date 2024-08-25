@@ -820,6 +820,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                     ),
                   ),
                   const Divider(),
+                  // 顯示裝置圖片
                   Center(
                     child: SizedBox(
                       height: 160.0,
@@ -827,6 +828,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                     ),
                   ),
                   const Divider(),
+                  // 顯示裝置資訊
                   Center(
                     child: Text(
                       S.current.NodeInformation,
@@ -834,6 +836,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                     ),
                   ),
                   const Divider(),
+                  // 顯示裝置定位資訊
                   Center(
                     child: Text(
                       S.current.LocationInformation,
@@ -911,6 +914,31 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                                   TableCellVerticalAlignment.middle,
                               child: Padding(
                                 padding: const EdgeInsets.all(4.0),
+                                child: Row(
+                                  children: [
+                                    if (x['viaId'] == x['nodeId']) ...[
+                                      AutoSizeText('self',
+                                          group: textSizeGroup1),
+                                    ] else ...[
+                                      IconButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                            _longPressNodeMarker(x['viaId']);
+                                          },
+                                          icon: const Icon(Icons.location_pin)),
+                                      AutoSizeText(x['viaIdHex'],
+                                          group: textSizeGroup1),
+                                    ],
+                                  ],
+                                ),
+                              ),
+                            ),
+                            /*
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
                                 child: AutoSizeText(
                                     x['viaId'] == x['nodeId']
                                         ? 'self'
@@ -918,6 +946,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                                     group: textSizeGroup1),
                               ),
                             ),
+                            */
                             TableCell(
                               verticalAlignment:
                                   TableCellVerticalAlignment.middle,
