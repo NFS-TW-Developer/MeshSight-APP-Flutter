@@ -46,6 +46,8 @@ class _MeshNodeMapState extends State<MeshNodeMap>
 
   List<String> _meshtasticDeviceImageFiles = [];
 
+  bool _apiDataLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -58,25 +60,60 @@ class _MeshNodeMapState extends State<MeshNodeMap>
 
   @override
   Widget build(BuildContext context) {
-    return FlutterMap(
-      mapController: _mapController,
-      options: MapOptions(
-        initialCenter: _currentMapVision.center,
-        initialZoom: _currentMapVision.zoom,
-        onMapEvent: _onMapEvent,
-        interactionOptions: const InteractionOptions(
-          flags: InteractiveFlag.all & ~InteractiveFlag.rotate, // 禁止旋轉
-        ),
-        minZoom: 3.0,
-        maxZoom: 18.0,
-        cameraConstraint: CameraConstraint.contain(
-          bounds: LatLngBounds(
-            const LatLng(-90, -180),
-            const LatLng(90, 180),
+    return Stack(
+      children: [
+        FlutterMap(
+          mapController: _mapController,
+          options: MapOptions(
+            initialCenter: _currentMapVision.center,
+            initialZoom: _currentMapVision.zoom,
+            onMapEvent: _onMapEvent,
+            interactionOptions: const InteractionOptions(
+              flags: InteractiveFlag.all & ~InteractiveFlag.rotate, // 禁止旋轉
+            ),
+            minZoom: 3.0,
+            maxZoom: 18.0,
+            cameraConstraint: CameraConstraint.contain(
+              bounds: LatLngBounds(
+                const LatLng(-90, -180),
+                const LatLng(90, 180),
+              ),
+            ), // 相機邊界的最大經緯度 (接近南極北極)
           ),
-        ), // 相機邊界的最大經緯度 (接近南極北極)
-      ),
-      children: _showMapChildren,
+          children: _showMapChildren,
+        ),
+        // 右下按鈕區
+        Positioned(
+          bottom: 32,
+          right: 8,
+          child: Column(
+            children: [
+              FloatingActionButton(
+                mini: _appSettingMap.miniButton,
+                onPressed: _getApiData,
+                backgroundColor: Colors.blue,
+                child: _apiDataLoading
+                    ? const CircularProgressIndicator()
+                    : const Icon(Icons.restart_alt),
+              ),
+              const SizedBox(height: 8),
+              FloatingActionButton(
+                mini: _appSettingMap.miniButton,
+                onPressed: _pressLocationButton,
+                backgroundColor: Colors.blue,
+                child: const Icon(Icons.my_location),
+              ),
+              const SizedBox(height: 8),
+              FloatingActionButton(
+                mini: _appSettingMap.miniButton,
+                onPressed: _pressQuestionButton,
+                backgroundColor: Colors.blue,
+                child: const Icon(Icons.question_mark),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -154,35 +191,6 @@ class _MeshNodeMapState extends State<MeshNodeMap>
           length: ScalebarLength.xxl,
         ),
       ],
-      // 右下按鈕區
-      Positioned(
-        bottom: 32,
-        right: 8,
-        child: Column(
-          children: [
-            FloatingActionButton(
-              mini: functionButtonMiniVisibility,
-              onPressed: _getApiData,
-              backgroundColor: Colors.blue,
-              child: const Icon(Icons.restart_alt),
-            ),
-            const SizedBox(height: 8),
-            FloatingActionButton(
-              mini: functionButtonMiniVisibility,
-              onPressed: _pressLocationButton,
-              backgroundColor: Colors.blue,
-              child: const Icon(Icons.my_location),
-            ),
-            const SizedBox(height: 8),
-            FloatingActionButton(
-              mini: functionButtonMiniVisibility,
-              onPressed: _pressQuestionButton,
-              backgroundColor: Colors.blue,
-              child: const Icon(Icons.question_mark),
-            ),
-          ],
-        ),
-      ),
       // 左下方 Attribution 宣告
       RichAttributionWidget(
         alignment: AttributionAlignment.bottomLeft,
@@ -216,11 +224,10 @@ class _MeshNodeMapState extends State<MeshNodeMap>
 
   // 初始化數據
   Future<void> _getApiData() async {
+    setState(() {
+      _apiDataLoading = true;
+    });
     try {
-      setState(() {
-        _mapCoordinatesData = {};
-      });
-      await _generateShowMapChildren();
       DateTime now = DateTime.now();
       int mapNodeMaxAgeInHours = _appSettingMap.nodeMaxAgeInHours;
       int mapNodeNeighborMaxAgeInHours =
@@ -246,6 +253,9 @@ class _MeshNodeMapState extends State<MeshNodeMap>
         SnackBar(content: Text(e.toString())),
       );
     }
+    setState(() {
+      _apiDataLoading = false;
+    });
   }
 
   Future<void> _onMapEvent(MapEvent event) async {
@@ -265,9 +275,9 @@ class _MeshNodeMapState extends State<MeshNodeMap>
   Future<void> _setCurrentMapVision(MapVision vision) async {
     setState(() {
       _currentMapVision = vision;
+      _showNodeCover = vision.zoom >= 9.5;
+      _showNodeLine = vision.zoom >= 10.5;
       _showNodeTag = vision.zoom >= 12.0;
-      _showNodeCover = vision.zoom >= 10.0;
-      _showNodeLine = vision.zoom >= 11.0;
     });
     AppSettingMap appSettingMap = await SharedPreferencesUtil.setAppSettingMap(
         _appSettingMap.copyWith(mapVision: vision));
