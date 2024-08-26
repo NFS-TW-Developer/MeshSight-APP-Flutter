@@ -6,6 +6,7 @@
     "ApiErrorMsg1": "API connection error, please try again later.",
     "ApiUrl": "API URL",
     "Application": "Application",
+    "AppTitle": "MeshSight APP - Third-Party Meshtastic Node Map",
     "Analysis": "Analysis",
     "AnalysisActiveHourlyRecord": " Hourly Active Device",
     "AnalysisActiveHourlyRecordUnKnownCount": "Unknown Node Info device",

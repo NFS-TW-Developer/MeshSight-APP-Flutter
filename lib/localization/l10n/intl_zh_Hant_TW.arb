@@ -6,6 +6,7 @@
     "ApiErrorMsg1": "API 連線錯誤，請稍候再重新嘗試。",
     "ApiUrl": "API 網址",
     "Application": "應用程式",
+    "AppTitle": "MeshSight APP - 第三方 Meshtastic 節點地圖",
     "Analysis": "分析",
     "AnalysisActiveHourlyRecord": "每小時在線裝置",
     "AnalysisActiveHourlyRecordUnKnownCount": "未知 Node Info 的裝置",
