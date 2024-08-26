@@ -16,9 +16,9 @@ class AppCore {
     setupLocator();
     await setupConfig();
     await appSharedPreferenceChecker();
-    appLocator<LocalizationService>().initialize();
 
-    // appLocator<AppLoggingService>().initialize();
+    appLocator<LocalizationService>().initialize();
+    appLocator<AppLoggingService>().initialize();
   }
 
   static void setupLocator() {

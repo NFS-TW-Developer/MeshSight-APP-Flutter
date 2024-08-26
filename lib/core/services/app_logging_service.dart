@@ -20,8 +20,10 @@ class AppLoggingService {
     Flogger.d('正在進行初始化...');
 
     // 刪除7天前的紀錄
-    deleteAppLoggingsBefore(
-        DateTime.now().subtract(const Duration(days: 7)).toString());
+    if (!kIsWeb) {
+      deleteAppLoggingsBefore(
+          DateTime.now().subtract(const Duration(days: 7)).toString());
+    }
     // 初始化 Flogger
     Flogger.init(
       config: const FloggerConfig(
@@ -43,17 +45,19 @@ class AppLoggingService {
       if (record.message.contains("password")) return;
 
       // 將收到的 log 儲存起來
-      final newAppLogging = AppLogging(
-          id: record.hashCode.toString(),
-          loggerName: record.loggerName,
-          level: record.level.toString(),
-          time: record.time.toString(),
-          className: record.className.toString(),
-          methodName: record.methodName.toString(),
-          message: record.message,
-          stackTrace: record.stackTrace.toString(),
-          printable: record.printable());
-      await addAppLogging(newAppLogging);
+      if (!kIsWeb) {
+        final newAppLogging = AppLogging(
+            id: record.hashCode.toString(),
+            loggerName: record.loggerName,
+            level: record.level.toString(),
+            time: record.time.toString(),
+            className: record.className.toString(),
+            methodName: record.methodName.toString(),
+            message: record.message,
+            stackTrace: record.stackTrace.toString(),
+            printable: record.printable());
+        await addAppLogging(newAppLogging);
+      }
 
       // 將 log 列印到開發者控制台。
       log(record.printable(), stackTrace: record.stackTrace);
