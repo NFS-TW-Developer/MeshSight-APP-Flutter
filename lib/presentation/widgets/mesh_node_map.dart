@@ -473,10 +473,10 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                 gradient: RadialGradient(
                   colors: [
                     markers.length < 50
-                        ? Colors.green
+                        ? Colors.purple
                         : markers.length < 100
-                            ? Colors.orange
-                            : Colors.red,
+                            ? Colors.cyan
+                            : Colors.pink,
                     Colors.transparent,
                   ],
                   stops: const [0.5, 1.0],
