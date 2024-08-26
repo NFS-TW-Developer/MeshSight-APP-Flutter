@@ -27,6 +27,7 @@ class WelcomeViewModel extends BaseViewModel {
     _appSettingApi = await SharedPreferencesUtil.getAppSettingApi();
     _textController.text = _appSettingApi.apiUrl ?? '';
     setBusy(false);
+    await setCurrentLocale(appLocator<LocalizationService>().appLocale);
   }
 
   bool validateApiUrl(String value) {

@@ -2,7 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:particles_fly/particles_fly.dart';
 
+import '../../../core/app_core.dart';
 import '../../../core/models/app_setting_api.dart';
+import '../../../core/services/localization_service.dart';
 import '../../../localization/generated/l10n.dart';
 import '../base_view.dart';
 import 'welcome_model.dart';
@@ -91,20 +93,22 @@ class WelcomeView extends StatelessWidget {
                               // 下拉選單
                               DropdownButton<Locale>(
                                 value: model.currentLocale,
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: Locale('en'),
-                                    child: Text('English'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: Locale.fromSubtags(
-                                      languageCode: 'zh',
-                                      scriptCode: 'Hant',
-                                      countryCode: 'TW',
+                                items: List.generate(
+                                    appLocator<LocalizationService>()
+                                        .getSupportedLocales()
+                                        .length, (index) {
+                                  Locale locale =
+                                      appLocator<LocalizationService>()
+                                          .getSupportedLocales()[index];
+                                  return DropdownMenuItem(
+                                    value: appLocator<LocalizationService>()
+                                        .getSupportedLocales()[index],
+                                    child: Text(
+                                      appLocator<LocalizationService>()
+                                          .getLanguageName(locale),
                                     ),
-                                    child: Text('繁體中文(台灣)'),
-                                  ),
-                                ],
+                                  );
+                                }),
                                 onChanged: model.setCurrentLocale,
                               ),
                               Text(

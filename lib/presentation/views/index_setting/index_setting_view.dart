@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
-import 'package:meshsightapp/router/app_router.gr.dart';
 
+import '../../../core/app_core.dart';
+import '../../../core/services/localization_service.dart';
 import '../../../localization/generated/l10n.dart';
+import '../../../router/app_router.gr.dart';
 import '../../widgets/base_expansion_tile.dart';
 import '../../widgets/base_list_tile.dart';
 import '../../widgets/base_list_title.dart';
@@ -29,28 +31,26 @@ class IndexSettingView extends StatelessWidget {
               BaseListTitle(title: S.current.Application),
               BaseExpansionTile(
                 title: S.current.Language,
-                children: [
-                  RadioListTile<Locale>(
-                    title: const Text('English'),
-                    value: const Locale('en'),
-                    groupValue: model.currentLocale,
-                    onChanged: (value) {
-                      model.setCurrentLocale(value);
-                    },
-                  ),
-                  RadioListTile<Locale>(
-                    title: const Text('繁體中文(台灣)'),
-                    value: const Locale.fromSubtags(
-                      languageCode: 'zh',
-                      scriptCode: 'Hant',
-                      countryCode: 'TW',
-                    ),
-                    groupValue: model.currentLocale,
-                    onChanged: (value) {
-                      model.setCurrentLocale(value);
-                    },
-                  ),
-                ],
+                children: List.generate(
+                  appLocator<LocalizationService>()
+                      .getSupportedLocales()
+                      .length,
+                  (index) {
+                    Locale locale = appLocator<LocalizationService>()
+                        .getSupportedLocales()[index];
+                    return RadioListTile<Locale>(
+                      title: Text(
+                        appLocator<LocalizationService>()
+                            .getLanguageName(locale),
+                      ),
+                      value: locale,
+                      groupValue: model.currentLocale,
+                      onChanged: (value) {
+                        model.setCurrentLocale(value);
+                      },
+                    );
+                  },
+                ),
               ),
               BaseExpansionTile(
                 title: S.current.ApiUrl,
