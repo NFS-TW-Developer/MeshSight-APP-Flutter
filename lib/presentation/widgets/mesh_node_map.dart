@@ -160,7 +160,6 @@ class _MeshNodeMapState extends State<MeshNodeMap>
   }
 
   Future<void> _initBaseMapChildren() async {
-    bool functionButtonMiniVisibility = _appSettingMap.miniButton;
     bool scalebarVisibility = _appSettingMap.scalebarVisible;
 
     String tileRegion = _appSettingMap.tileRegion;
