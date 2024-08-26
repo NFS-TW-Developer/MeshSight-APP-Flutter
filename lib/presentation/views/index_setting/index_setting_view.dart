@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
+import 'package:meshsightapp/core/utils/app_utils.dart';
 
 import '../../../core/app_core.dart';
 import '../../../core/services/localization_service.dart';
 import '../../../localization/generated/l10n.dart';
-import '../../../router/app_router.gr.dart';
 import '../../widgets/base_expansion_tile.dart';
 import '../../widgets/base_list_tile.dart';
 import '../../widgets/base_list_title.dart';
@@ -60,7 +60,7 @@ class IndexSettingView extends StatelessWidget {
                     title: S.current.Reset,
                     onTapFunction: () async {
                       await model.resetAppSettingApi();
-                      AutoRouter.of(context).replaceAll([const IndexRoute()]);
+                      AppUtils.restartApp();
                     },
                     trailing: const Icon(Icons.arrow_forward_ios),
                   ),

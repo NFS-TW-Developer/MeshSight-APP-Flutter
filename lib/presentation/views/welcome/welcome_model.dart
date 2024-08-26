@@ -12,7 +12,7 @@ class WelcomeViewModel extends BaseViewModel {
   AppSettingApi _appSettingApi = AppSettingApi();
   AppSettingApi get appSettingApi => _appSettingApi;
 
-  TextEditingController _textController = TextEditingController();
+  final TextEditingController _textController = TextEditingController();
   TextEditingController get textController => _textController;
 
   Locale? _currentLocale; // 目前語言

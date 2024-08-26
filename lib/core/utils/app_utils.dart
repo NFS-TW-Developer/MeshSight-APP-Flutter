@@ -12,7 +12,7 @@ class AppUtils {
   /*
    重新啟動 APP
    */
-  static void restartApp(BuildContext? context) {
+  static void restartApp({BuildContext? context}) {
     Flogger.d('APP 重新啟動');
     // 取得路由，如果未傳入則使用全域變數(非必要情況下不建議使用)
     StackRouter router = appLocator<AppRouter>();
