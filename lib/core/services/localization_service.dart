@@ -42,6 +42,8 @@ class LocalizationService {
   Future<void> setAppLocale({Locale? locale}) async {
     // 判斷是否有傳入 locale
     if (locale != null) {
+      // 別名處理
+      locale = processAlias(locale);
       // 若有傳入 locale，則先檢查是否是支援的語言，如果不是，則嘗試設定語言為 Locale('en')
       if (isSupportedLocale(locale) == false) {
         Flogger.d("目前 ${locale.toString()} 為 APP 不支援的語言，將嘗試設定語言為 Locale('en')");
@@ -111,6 +113,27 @@ class LocalizationService {
 
   // 檢查是否為 APP 端支援的語言
   bool isSupportedLocale(Locale locale) {
-    return S.delegate.isSupported(locale);
+    List<Locale> supportedLocales = getSupportedLocales();
+    for (Locale supportedLocale in supportedLocales) {
+      if (supportedLocale.languageCode == locale.languageCode &&
+          supportedLocale.scriptCode == locale.scriptCode &&
+          supportedLocale.countryCode == locale.countryCode) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // 別名處理
+  Locale processAlias(Locale locale) {
+    // 別名處理
+    if (locale.toLanguageTag() == 'zh-TW') {
+      locale = const Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hant',
+        countryCode: 'TW',
+      );
+    }
+    return locale;
   }
 }
