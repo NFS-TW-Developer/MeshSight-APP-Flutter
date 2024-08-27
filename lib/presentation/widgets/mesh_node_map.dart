@@ -406,6 +406,11 @@ class _MeshNodeMapState extends State<MeshNodeMap>
         LatLng nodeBPoint = LatLng(
             double.tryParse(nodeBPosition['latitude'].toString()) ?? 0.0,
             double.tryParse(nodeBPosition['longitude'].toString()) ?? 0.0);
+        // 檢查節點是否在視野內
+        if (!_isInCurrentMapVision(nodeAPoint) &&
+            !_isInCurrentMapVision(nodeBPoint)) {
+          continue;
+        }
         nodeLineChildren.add(_generatePolyline(nodeAPoint, nodeBPoint));
       }
     }
@@ -443,6 +448,12 @@ class _MeshNodeMapState extends State<MeshNodeMap>
         LatLng nodeCPoint = LatLng(
             double.tryParse(nodeCPosition['latitude'].toString()) ?? 0.0,
             double.tryParse(nodeCPosition['longitude'].toString()) ?? 0.0);
+        // 檢查節點是否在視野內
+        if (!_isInCurrentMapVision(nodeAPoint) &&
+            !_isInCurrentMapVision(nodeBPoint) &&
+            !_isInCurrentMapVision(nodeCPoint)) {
+          continue;
+        }
         nodeCoverChildren
             .add(_generatePolygon(nodeAPoint, nodeBPoint, nodeCPoint));
       }
