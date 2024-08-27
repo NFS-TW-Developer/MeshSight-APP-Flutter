@@ -164,8 +164,14 @@ class IndexSettingView extends StatelessWidget {
                   Slider(
                     value: model.appSettingMap.nodeMaxAgeInHours.toDouble(),
                     min: 1,
-                    max: 36,
-                    divisions: 35,
+                    max: model.apiAppSettingData[
+                                'meshtasticPositionMaxQueryPeriod']
+                            ?.toDouble() ??
+                        24,
+                    divisions: model.apiAppSettingData[
+                                'meshtasticPositionMaxQueryPeriod']
+                            ?.toInt() ??
+                        24,
                     label:
                         "${model.appSettingMap.nodeMaxAgeInHours.toString()} ${S.current.Hour}",
                     onChanged: (value) {
@@ -185,8 +191,14 @@ class IndexSettingView extends StatelessWidget {
                     value: model.appSettingMap.nodeNeighborMaxAgeInHours
                         .toDouble(),
                     min: 1,
-                    max: 6,
-                    divisions: 5,
+                    max: model.apiAppSettingData[
+                                'meshtasticNeighborinfoMaxQueryPeriod']
+                            ?.toDouble() ??
+                        24,
+                    divisions: model.apiAppSettingData[
+                                'meshtasticNeighborinfoMaxQueryPeriod']
+                            ?.toInt() ??
+                        24,
                     label:
                         "${model.appSettingMap.nodeNeighborMaxAgeInHours.toString()} ${S.current.Hour}",
                     onChanged: (value) {

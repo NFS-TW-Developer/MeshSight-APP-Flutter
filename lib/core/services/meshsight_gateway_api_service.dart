@@ -141,6 +141,29 @@ class MeshsightGatewayApiService {
     }
   }
 
+  Future<Map<String, dynamic>?> appSettingData() async {
+    try {
+      http.Response response;
+      // 重複嘗試，如果成功就不再重複，以確保資料取得，避免因網路問題導致資料取得失敗
+      int doCount = 1; // 重複次數
+      int doLimit = 3; // 重複上限
+      do {
+        response = await _performRequest(
+          http.Request('GET', await _buildGeneralUri('v1/app/setting/data')),
+          timeout: _generalTimeout,
+        );
+        if (response.statusCode == 200) {
+          // 資料取得成功，跳出
+          break;
+        }
+        doCount++;
+      } while (doCount <= doLimit);
+      return jsonDecode(utf8.decode(response.bodyBytes));
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<Map<String, dynamic>?> mapCoordinates(
       {DateTime? start, DateTime? end, int? reportNodeHours}) async {
     try {
