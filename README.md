@@ -1,11 +1,9 @@
 # MeshSight-APP-Flutter
+<img src = "https://raw.githubusercontent.com/edwinyoo44/MeshSight-APP-Flutter/master/assets/images/app_icon.png" width = "128" />
 
 ## 簡介
 MeshSight 是一款第三方的視覺化呈現 Meshtastic 節點地圖資訊的專案，任何人都可以建立屬於自己的地圖。
 本倉儲存放了 [MeshSight](https://github.com/edwinyoo44/MeshSight) 的 UI 操作介面，採用 Flutter 平台進行開發。
-
-## 參與貢獻
-如果您有功能請求或發現錯誤，請在 GitHub 上[開啟 issue](https://github.com/edwinyoo44/MeshSight-APP-Flutter/issues)。
 
 ## 截圖
 ![image](https://raw.githubusercontent.com/edwinyoo44/MeshSight-APP-Flutter/master/screenshot/e9e6cfae-6218-47ff-88b3-a8ac4446599d.png)
