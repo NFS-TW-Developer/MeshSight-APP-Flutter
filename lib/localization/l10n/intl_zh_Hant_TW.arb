@@ -35,7 +35,7 @@
     "LoraModemPreset": "Lora Modem Preset",
     "LoraRegion": "Lora 地區",
     "Map": "地圖",
-    "MapDarkMode": "暗黑模式",
+    "MapDarkMode": "暗黑模式(部分裝置不支援)",
     "MapFunctionButtonMini": "較小的功能按鈕",
     "MapNodeCover": "節點覆蓋",
     "MapNodeCoverLegend": "代表近期內有被彼此上報",

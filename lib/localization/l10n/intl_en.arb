@@ -35,7 +35,7 @@
     "LoraModemPreset": "Lora Modem Preset",
     "LoraRegion": "Lora Region",
     "Map": "Map",
-    "MapDarkMode": "Dark Mode",
+    "MapDarkMode": "Dark mode (not supported on some devices)",
     "MapFunctionButtonMini": "Mini Function Button",
     "MapNodeCover": "Node Cover",
     "MapNodeCoverLegend": "Indicates recently reported by each other",
