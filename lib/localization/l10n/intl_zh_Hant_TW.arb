@@ -41,6 +41,7 @@
     "MapNodeCoverLegend": "代表近期內有被彼此上報",
     "MapNodeLine": "節點連線",
     "MapNodeLineLegend": "代表近期內有被對方上報",
+    "MapNodeLineNeighborLegend": "代表近期內有 Neighbor Info 資料",
     "MapNodeMark": "節點標記",
     "MapNodeMarkLegendBlue": "12 小時內更新",
     "MapNodeMarkLegendGreen": "1 小時內更新",

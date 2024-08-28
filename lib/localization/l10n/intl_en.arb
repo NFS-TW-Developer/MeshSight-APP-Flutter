@@ -41,6 +41,7 @@
     "MapNodeCoverLegend": "Indicates recently reported by each other",
     "MapNodeLine": "Node Line",
     "MapNodeLineLegend": "Indicates recently reported by the other party",
+    "MapNodeLineNeighborLegend": "Indicates recent Neighbor Info data",
     "MapNodeMark": "Node Mark",
     "MapNodeMarkLegendBlue": "Updated within 12 hours",
     "MapNodeMarkLegendGreen": "Updated within 1 hour",

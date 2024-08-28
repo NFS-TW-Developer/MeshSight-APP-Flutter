@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
@@ -338,6 +339,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
     });
     List<Widget> showMapChildren = [];
     List<Widget> nodeLineChildren = [];
+    List<Widget> nodeLineNeighborChildren = [];
     List<Widget> nodeCoverChildren = [];
     List<CircleMarker> nodeCircleMarker = [];
     List<Marker> nodeMarker = [];
@@ -411,7 +413,42 @@ class _MeshNodeMapState extends State<MeshNodeMap>
             !_isInCurrentMapVision(nodeBPoint)) {
           continue;
         }
-        nodeLineChildren.add(_generatePolyline(nodeAPoint, nodeBPoint));
+        nodeLineChildren.add(
+            _generatePolyline(nodeAPoint, nodeBPoint, color: Colors.redAccent));
+      }
+    }
+
+    // 產生節點連線 Neighbor
+    if (_showNodeLine && _appSettingMap.lineVisible) {
+      List<dynamic> nodeLine = _mapCoordinatesData['nodeLineNeighbor'];
+      for (var line in nodeLine) {
+        Map<String, dynamic>? nodeA = _mapCoordinatesData['items'].firstWhere(
+            (element) => element['id'] == line[0],
+            orElse: () => null);
+        Map<String, dynamic>? nodeB = _mapCoordinatesData['items'].firstWhere(
+            (element) => element['id'] == line[1],
+            orElse: () => null);
+        if (nodeA == null || nodeB == null) {
+          continue;
+        }
+        Map<String, dynamic>? nodeAPosition = nodeA['positions'][0];
+        Map<String, dynamic>? nodeBPosition = nodeB['positions'][0];
+        if (nodeAPosition == null || nodeBPosition == null) {
+          continue;
+        }
+        LatLng nodeAPoint = LatLng(
+            double.tryParse(nodeAPosition['latitude'].toString()) ?? 0.0,
+            double.tryParse(nodeAPosition['longitude'].toString()) ?? 0.0);
+        LatLng nodeBPoint = LatLng(
+            double.tryParse(nodeBPosition['latitude'].toString()) ?? 0.0,
+            double.tryParse(nodeBPosition['longitude'].toString()) ?? 0.0);
+        // 檢查節點是否在視野內
+        if (!_isInCurrentMapVision(nodeAPoint) &&
+            !_isInCurrentMapVision(nodeBPoint)) {
+          continue;
+        }
+        nodeLineNeighborChildren.add(_generatePolyline(nodeAPoint, nodeBPoint,
+            color: Colors.blueAccent));
       }
     }
 
@@ -463,6 +500,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
     showMapChildren.addAll(_baseMapChildren1);
     showMapChildren.addAll(nodeCoverChildren);
     showMapChildren.addAll(nodeLineChildren);
+    showMapChildren.addAll(nodeLineNeighborChildren);
     showMapChildren.add(
       CircleLayer(
         circles: nodeCircleMarker,
@@ -572,7 +610,18 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                           ' -- - -- ',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.bold),
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(S.current.MapNodeLineNeighborLegend),
+                      ]),
+                      TableRow(children: [
+                        const Text(
+                          ' -- - -- ',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.redAccent,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(S.current.MapNodeLineLegend),
                       ]),
@@ -757,9 +806,29 @@ class _MeshNodeMapState extends State<MeshNodeMap>
     );
   }
 
+  // 計算兩個座標之間的距離
+  double _calculateDistance(LatLng pointA, LatLng pointB) {
+    const R = 6371; // 地球半徑，單位：公里
+    double degToRad(double deg) {
+      return deg * (pi / 180);
+    }
+
+    final dLat = degToRad(pointB.latitude - pointA.latitude);
+    final dLon = degToRad(pointB.longitude - pointA.longitude);
+    final a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(degToRad(pointA.latitude)) *
+            cos(degToRad(pointB.latitude)) *
+            sin(dLon / 2) *
+            sin(dLon / 2);
+    final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    final distance = R * c; // 單位：公里
+    return distance * 1000; // 轉換為公尺
+  }
+
   // 產生折線
   Widget _generatePolyline(LatLng pointA, LatLng pointB,
-      {double distance = 0}) {
+      {Color color = Colors.red}) {
+    double distance = _calculateDistance(pointA, pointB);
     List<double> segments;
     if (distance < 100) {
       segments = [8, 4];
@@ -778,8 +847,8 @@ class _MeshNodeMapState extends State<MeshNodeMap>
             pointA,
             pointB,
           ],
-          strokeWidth: 1.5,
-          color: Colors.red.withOpacity(0.78),
+          strokeWidth: 2,
+          color: color.withOpacity(0.78),
           pattern: StrokePattern.dashed(
             segments: segments,
           ),
