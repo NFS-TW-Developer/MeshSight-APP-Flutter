@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import '../../localization/generated/l10n.dart';
 import '../theme/ui_theme.dart';
 import 'base_app_bar.dart';
 
@@ -25,6 +27,12 @@ class BaseScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setApplicationSwitcherDescription(
+      ApplicationSwitcherDescription(
+        label: "$appBarTitle | ${S.current.AppTitle}",
+        primaryColor: 0xffaaaaaa, // This line is required
+      ),
+    );
     return Scaffold(
       backgroundColor: UiTheme.backgroundColor,
       appBar: (appBarShow)
