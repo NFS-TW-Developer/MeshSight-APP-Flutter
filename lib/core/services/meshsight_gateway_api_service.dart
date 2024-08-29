@@ -41,7 +41,7 @@ class MeshsightGatewayApiService {
       {Map<String, dynamic>? queryParams}) async {
     AppSettingApi appSettingApi =
         await SharedPreferencesUtil.getAppSettingApi();
-    String baseURL = appSettingApi.apiUrl ?? '';
+    String baseURL = appSettingApi.apiUrl;
 
     Uri uri = Uri.parse(baseURL);
 

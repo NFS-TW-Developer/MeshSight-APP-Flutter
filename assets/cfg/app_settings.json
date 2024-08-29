@@ -1,13 +1,17 @@
 {
   "api": {
-    "demo": {
+    "server": {
+      "default": {
+        "name": "Global Server(Demo)",
+        "url": "https://meshsight-api-global.nfs.tw"
+      },
       "tw": {
-        "name": "台灣專用 API Demo Server",
+        "name": "台灣專用伺服器(Demo)",
         "url": "https://meshsight-api-tw.nfs.tw"
       },
-      "global": {
-        "name": "Global API Demo Server",
-        "url": "https://meshsight-api-global.nfs.tw"
+      "custom": {
+        "name": "Custom Server(自訂)",
+        "url": "https://api.custom.meshsight"
       }
     },
     "timeout": 60

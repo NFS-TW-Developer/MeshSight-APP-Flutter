@@ -30,6 +30,9 @@ class IndexSettingViewModel extends BaseViewModel {
   Map<String, dynamic> _apiAppSettingData = {}; // API data
   Map<String, dynamic> get apiAppSettingData => _apiAppSettingData;
 
+  final TextEditingController _textController = TextEditingController();
+  TextEditingController get textController => _textController;
+
   // 初始化參數
   @override
   void initViewModel(BuildContext context) async {
@@ -106,5 +109,49 @@ class IndexSettingViewModel extends BaseViewModel {
     _currentLocale = locale;
     await appLocator<LocalizationService>().setAppLocale(locale: locale);
     setBusy(false);
+  }
+
+  void showInputDialog({
+    required BuildContext context,
+    required String title,
+    required String hintText,
+    required TextEditingController textController,
+    required bool Function(String) validateFunction,
+    required VoidCallback onConfirmFunction,
+  }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: TextField(
+            controller: textController,
+            decoration: InputDecoration(
+              hintText: hintText,
+              errorText: validateFunction(textController.text)
+                  ? null
+                  : S.current.NotValidContent,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(S.current.Cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(S.current.Confirm),
+              onPressed: () {
+                if (validateFunction(textController.text)) {
+                  onConfirmFunction();
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

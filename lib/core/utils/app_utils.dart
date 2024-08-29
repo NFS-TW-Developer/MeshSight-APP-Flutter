@@ -56,4 +56,12 @@ class AppUtils {
       return S.current.TimeAgoMinute(difference.inMinutes);
     }
   }
+
+  /*
+    驗證是否為有效的 URL
+   */
+  static bool isValidUrl(String value) {
+    Uri uri = Uri.parse(value);
+    return uri.isAbsolute && uri.hasScheme && uri.hasAuthority;
+  }
 }

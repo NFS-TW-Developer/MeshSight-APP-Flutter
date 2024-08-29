@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
+import 'package:meshsightapp/core/models/app_setting_api.dart';
 import 'package:meshsightapp/core/utils/app_utils.dart';
 
 import '../../../core/app_core.dart';
@@ -29,6 +30,7 @@ class IndexSettingView extends StatelessWidget {
           body: ListView(
             children: [
               BaseListTitle(title: S.current.Application),
+              // 語言
               BaseExpansionTile(
                 title: S.current.Language,
                 children: List.generate(
@@ -52,20 +54,61 @@ class IndexSettingView extends StatelessWidget {
                   },
                 ),
               ),
+              // API
               BaseExpansionTile(
-                title: S.current.ApiUrl,
-                children: [
-                  Text(model.appSettingApi.apiUrl ?? ''),
-                  BaseListTile(
-                    title: S.current.Reset,
-                    onTapFunction: () async {
-                      await model.resetAppSettingApi();
-                      AppUtils.restartApp();
-                    },
-                    trailing: const Icon(Icons.arrow_forward_ios),
-                  ),
-                ],
+                title: model.appSettingApi.apiServer == 'custom'
+                    ? "${S.current.ApiUrl} (${model.appSettingApi.apiUrl})"
+                    : S.current.ApiUrl,
+                children: List.generate(
+                  GlobalConfiguration()
+                      .getDeepValue('api:server')
+                      .keys
+                      .toList()
+                      .length,
+                  (index) {
+                    String apiServerKey = GlobalConfiguration()
+                        .getDeepValue('api:server')
+                        .keys
+                        .toList()[index];
+                    return RadioListTile<String>(
+                      title: Text(GlobalConfiguration()
+                          .getDeepValue('api:server:$apiServerKey:name')),
+                      value: apiServerKey,
+                      groupValue: model.appSettingApi.apiServer,
+                      onChanged: (value) {
+                        if (value == null || value.isEmpty) return;
+                        if (value == 'custom') {
+                          // 自訂 API，顯示輸入對話框
+                          model.showInputDialog(
+                            context: context,
+                            title: S.current.ApiUrl,
+                            hintText: S.current.ApiUrl,
+                            textController: model.textController,
+                            validateFunction: AppUtils.isValidUrl,
+                            onConfirmFunction: () {
+                              model.setAppSettingApi(
+                                AppSettingApi(
+                                  apiServer: 'custom',
+                                  apiUrl: model.textController.text,
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          model.setAppSettingApi(
+                            AppSettingApi(
+                              apiServer: value,
+                              apiUrl: GlobalConfiguration()
+                                  .getDeepValue('api:server:$value:url'),
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  },
+                ),
               ),
+              // 版本
               BaseListTile(
                 title:
                     "${model.globalViewModel.appInfo.version} (${model.globalViewModel.appInfo.buildNumber})",

@@ -13,7 +13,7 @@ class AuthGuard extends AutoRouteGuard {
 
     AppSettingApi appSettingApi =
         await SharedPreferencesUtil.getAppSettingApi();
-    if (appSettingApi.apiUrl != null && appSettingApi.apiUrl != '') {
+    if (appSettingApi.apiUrl != '') {
       isSetApi = true;
     }
 

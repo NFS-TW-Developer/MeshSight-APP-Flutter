@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 
 import 'app_router.gr.dart';
-import 'guard/auth_guard.dart';
 
 /*
   這是一個專門處理 Router 的地方
@@ -19,10 +18,10 @@ class AppRouter extends $AppRouter {
           path: '/index',
           initial: true,
           page: IndexRoute.page,
-          guards: [AuthGuard()],
           children: [
+            RedirectRoute(path: '', redirectTo: 'map'),
             AutoRoute(
-              path: '', page: IndexMapRoute.page,
+              path: 'map', page: IndexMapRoute.page,
               maintainState: false, // 當路由切換時保持狀態
             ),
             AutoRoute(

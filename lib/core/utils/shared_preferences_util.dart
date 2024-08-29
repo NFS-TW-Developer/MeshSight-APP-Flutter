@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:meshsightapp/core/models/app_setting_map.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -143,31 +144,6 @@ class SharedPreferencesUtil {
     return;
   }
 
-  // app.apiRegion
-  // 設定 app.apiRegion
-  static Future<void> setApiRegion(String apiRegion) async {
-    await saveData<String>('app.apiRegion', apiRegion);
-    return;
-  }
-
-  // 取得 app.apiRegion
-  static Future<String> getApiRegion() async {
-    String? result = await getData<String>('app.apiRegion');
-    // 如果沒有設定過，則給一個預設值並儲存
-    if (result == null) {
-      // 預設值為 "tw"
-      await setApiRegion("tw");
-      result = "tw";
-    }
-    return result;
-  }
-
-  // 刪除 app.apiRegion
-  static Future<void> removeApiRegion() async {
-    await removeData('app.apiRegion');
-    return;
-  }
-
   // app.setting.api
   // 設定 app.setting.api
   static Future<AppSettingApi> setAppSettingApi(
@@ -180,8 +156,12 @@ class SharedPreferencesUtil {
 
   // 取得 app.setting.api
   static Future<AppSettingApi> getAppSettingApi() async {
+    Locale systemLocale = WidgetsBinding.instance.platformDispatcher.locale;
+    String? region =
+        systemLocale.countryCode?.toLowerCase() == "tw" ? "tw" : null;
     String jsonString = await getData<String>('app.setting.api') ??
-        jsonEncode((await setAppSettingApi(AppSettingApi(apiUrl: ""))).toMap());
+        jsonEncode(
+            (await setAppSettingApi(AppSettingApi(apiServer: region))).toMap());
     return AppSettingApi.fromMap(jsonDecode(jsonString))!;
   }
 
