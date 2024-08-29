@@ -34,6 +34,18 @@ class IndexViewModel extends BaseViewModel {
                   child: const Text(
                       'https://github.com/edwinyoo44/MeshSight-APP-Flutter/issues'),
                 ),
+                // 警告訊息
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  color: Colors.red,
+                  child: Text(
+                    "${S.current.WelcomeAlert1} \n\n ${S.current.WelcomeAlert2}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ],
             ),
             actions: <Widget>[
