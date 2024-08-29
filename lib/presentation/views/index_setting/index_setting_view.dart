@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:meshsightapp/core/models/app_setting_api.dart';
 import 'package:meshsightapp/core/utils/app_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/app_core.dart';
 import '../../../core/services/localization_service.dart';
@@ -331,6 +332,39 @@ class IndexSettingView extends StatelessWidget {
                   model.setAppSettingMap(
                     model.appSettingMap.copyWith(nodeMarkNameVisible: value),
                   );
+                },
+              ),
+              // 外部連結
+              BaseListTitle(title: S.current.ExternalLink),
+              BaseListTile(
+                title: "Meshtastic Official Website",
+                trailing: const Icon(Icons.open_in_new),
+                onTapFunction: () {
+                  launchUrl(Uri.parse('https://meshtastic.org/'));
+                },
+              ),
+              BaseListTile(
+                title: "Meshtastic Official Docs",
+                trailing: const Icon(Icons.open_in_new),
+                onTapFunction: () {
+                  launchUrl(
+                      Uri.parse('https://meshtastic.org/docs/introduction/'));
+                },
+              ),
+              BaseListTile(
+                title: "MeshSight on GitHub",
+                trailing: const Icon(Icons.open_in_new),
+                onTapFunction: () {
+                  launchUrl(
+                      Uri.parse('https://github.com/edwinyoo44/MeshSight/'));
+                },
+              ),
+              BaseListTile(
+                title: "MeshSight-APP-Flutter on GitHub",
+                trailing: const Icon(Icons.open_in_new),
+                onTapFunction: () {
+                  launchUrl(Uri.parse(
+                      'https://github.com/edwinyoo44/MeshSight-APP-Flutter/'));
                 },
               ),
             ],

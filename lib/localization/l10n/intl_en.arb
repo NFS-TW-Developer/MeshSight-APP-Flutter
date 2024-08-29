@@ -20,6 +20,7 @@
     "Day": "Day(s)",
     "DevelopAlertTitle": "🚧This project is still under development...",
     "DevelopAlertContent": "The related features are being gradually improved. If you encounter any issues or have any suggestions, please feel free to open an issue on GitHub.",
+    "ExternalLink": "External Link",
     "Hardware": "Hardware",
     "HasDefaultChannel": "Has Default Channel",
     "Hour": "Hour(s)",
