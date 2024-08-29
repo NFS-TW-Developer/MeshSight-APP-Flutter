@@ -15,7 +15,7 @@ class AppSettingMap {
   final MapVision mapVision;
 
   AppSettingMap({
-    this.tileRegion = 'global',
+    this.tileRegion = 'Global',
     this.tileProvider = 'default',
     this.darkMode = false,
     this.scalebarVisible = true,
