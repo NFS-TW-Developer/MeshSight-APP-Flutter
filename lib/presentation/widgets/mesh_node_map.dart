@@ -265,6 +265,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
         start: now.subtract(Duration(hours: mapNodeMaxAgeInHours)),
         end: now,
         reportNodeHours: mapNodeNeighborMaxAgeInHours,
+        isEmbed: widget.isEmbed,
       );
       if (data == null || data["status"] == "error") {
         throw (data != null

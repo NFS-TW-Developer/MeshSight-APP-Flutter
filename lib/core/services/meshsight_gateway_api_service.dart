@@ -38,10 +38,13 @@ class MeshsightGatewayApiService {
 
   // 將 URL 的構建抽象化到一個單獨的方法中，避免在每個 API 請求中重複相同的 URL 構建代碼
   Future<Uri> _buildGeneralUri(String path,
-      {Map<String, dynamic>? queryParams}) async {
+      {Map<String, dynamic>? queryParams, bool isEmbed = false}) async {
     AppSettingApi appSettingApi =
         await SharedPreferencesUtil.getAppSettingApi();
     String baseURL = appSettingApi.apiUrl;
+    if (isEmbed) {
+      baseURL = GlobalConfiguration().getDeepValue("api:server:default:url");
+    }
 
     Uri uri = Uri.parse(baseURL);
 
@@ -165,7 +168,10 @@ class MeshsightGatewayApiService {
   }
 
   Future<Map<String, dynamic>?> mapCoordinates(
-      {DateTime? start, DateTime? end, int? reportNodeHours}) async {
+      {DateTime? start,
+      DateTime? end,
+      int? reportNodeHours,
+      bool isEmbed = false}) async {
     try {
       http.Response response;
       // 重複嘗試，如果成功就不再重複，以確保資料取得，避免因網路問題導致資料取得失敗
@@ -175,12 +181,14 @@ class MeshsightGatewayApiService {
         response = await _performRequest(
           http.Request(
               'GET',
-              await _buildGeneralUri('v1/map/coordinates', queryParams: {
-                if (start != null) 'start': start.toIso8601String(),
-                if (end != null) 'end': end.toIso8601String(),
-                if (reportNodeHours != null)
-                  'reportNodeHours': reportNodeHours.toString(),
-              })),
+              await _buildGeneralUri('v1/map/coordinates',
+                  queryParams: {
+                    if (start != null) 'start': start.toIso8601String(),
+                    if (end != null) 'end': end.toIso8601String(),
+                    if (reportNodeHours != null)
+                      'reportNodeHours': reportNodeHours.toString(),
+                  },
+                  isEmbed: isEmbed)),
           timeout: _generalTimeout,
         );
         if (response.statusCode == 200) {
