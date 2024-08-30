@@ -33,7 +33,7 @@ class EmbedMapView extends StatelessWidget {
       builder: (context, model, child) {
         return BaseScaffold(
           appBarShow: false,
-          appBarTitle: S.current.EmbedMap,
+          appBarTitle: "${S.current.EmbedMap}@$latitude,$longitude,${zoom}z",
           body: MeshNodeMap(isEmbed: true, embedMapVision: embedMapVision),
         );
       },
