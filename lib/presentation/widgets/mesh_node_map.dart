@@ -99,7 +99,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
           child: Column(
             children: [
               FloatingActionButton(
-                mini: _appSettingMap.miniButton,
+                mini: _appSettingMap.miniButton || widget.isEmbed,
                 onPressed: _getApiData,
                 backgroundColor: Colors.blue,
                 child: _apiDataLoading
@@ -108,7 +108,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
               ),
               const SizedBox(height: 8),
               FloatingActionButton(
-                mini: _appSettingMap.miniButton,
+                mini: _appSettingMap.miniButton || widget.isEmbed,
                 onPressed: _pressLocationButton,
                 backgroundColor: Colors.blue,
                 child: const Icon(Icons.my_location),
