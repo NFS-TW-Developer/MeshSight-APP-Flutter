@@ -94,33 +94,10 @@ class _MeshNodeMapState extends State<MeshNodeMap>
         ),
         // 右下按鈕區
         Positioned(
-          bottom: 32,
+          top: 8,
           right: 8,
           child: Column(
             children: [
-              FloatingActionButton(
-                mini: _appSettingMap.miniButton || widget.isEmbed,
-                onPressed: _getApiData,
-                backgroundColor: Colors.blue,
-                child: _apiDataLoading
-                    ? const CircularProgressIndicator()
-                    : const Icon(Icons.restart_alt),
-              ),
-              const SizedBox(height: 8),
-              FloatingActionButton(
-                mini: _appSettingMap.miniButton || widget.isEmbed,
-                onPressed: _pressLocationButton,
-                backgroundColor: Colors.blue,
-                child: const Icon(Icons.my_location),
-              ),
-              const SizedBox(height: 8),
-              FloatingActionButton(
-                mini: _appSettingMap.miniButton || widget.isEmbed,
-                onPressed: _pressQuestionButton,
-                backgroundColor: Colors.blue,
-                child: const Icon(Icons.question_mark),
-              ),
-              const SizedBox(height: 8),
               if (widget.isEmbed) ...[
                 FloatingActionButton(
                   mini: _appSettingMap.miniButton || widget.isEmbed,
@@ -137,6 +114,31 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                   onPressed: _pressShareButton,
                   backgroundColor: Colors.blue,
                   child: const Icon(Icons.share),
+                ),
+              ],
+              const SizedBox(height: 8),
+              FloatingActionButton(
+                mini: _appSettingMap.miniButton || widget.isEmbed,
+                onPressed: _pressLocationButton,
+                backgroundColor: Colors.blue,
+                child: const Icon(Icons.my_location),
+              ),
+              const SizedBox(height: 8),
+              FloatingActionButton(
+                mini: _appSettingMap.miniButton || widget.isEmbed,
+                onPressed: _pressQuestionButton,
+                backgroundColor: Colors.blue,
+                child: const Icon(Icons.question_mark),
+              ),
+              if (!widget.isEmbed) ...[
+                const SizedBox(height: 8),
+                FloatingActionButton(
+                  mini: _appSettingMap.miniButton || widget.isEmbed,
+                  onPressed: _getApiData,
+                  backgroundColor: Colors.blue,
+                  child: _apiDataLoading
+                      ? const CircularProgressIndicator()
+                      : const Icon(Icons.restart_alt),
                 ),
               ],
             ],
@@ -192,6 +194,10 @@ class _MeshNodeMapState extends State<MeshNodeMap>
 
     String tileRegion = _appSettingMap.tileRegion;
     String tileProvider = _appSettingMap.tileProvider;
+    if (widget.isEmbed) {
+      tileRegion = 'Global';
+      tileProvider = 'default';
+    }
 
     List<Widget> baseMapChildren1 = [
       // 地圖底圖
@@ -222,15 +228,15 @@ class _MeshNodeMapState extends State<MeshNodeMap>
       // 左下方 Attribution 宣告
       RichAttributionWidget(
         alignment: AttributionAlignment.bottomLeft,
-        popupInitialDisplayDuration: const Duration(seconds: 1),
+        popupInitialDisplayDuration: const Duration(seconds: 5),
         animationConfig: const ScaleRAWA(),
         showFlutterMapAttribution: true,
         attributions: [
-          const TextSourceAttribution(
-            'This project is not affiliated with or endorsed by the Meshtastic project.\n'
-            'The Meshtastic logo is the trademark of Meshtastic LLC.',
+          TextSourceAttribution(
+            "${S.current.WelcomeAlert1}\n${S.current.WelcomeAlert2}",
             prependCopyright: false,
-            textStyle: TextStyle(fontSize: 12),
+            textStyle:
+                const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
           ),
           TextSourceAttribution(
             GlobalConfiguration().getDeepValue(
@@ -239,6 +245,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
               await launchUrl(Uri.parse(GlobalConfiguration().getDeepValue(
                   "map:tile:$tileRegion:$tileProvider:copyrightUrl")));
             },
+            textStyle: const TextStyle(fontSize: 12),
           ),
         ],
       ),
@@ -582,9 +589,17 @@ class _MeshNodeMapState extends State<MeshNodeMap>
   }
 
   Future<void> _pressLocationButton() async {
-    Position position = await Geolocator.getCurrentPosition();
-    MapVision vision = MapVision(
-        center: LatLng(position.latitude, position.longitude), zoom: 13);
+    MapVision vision;
+    if (widget.isEmbed) {
+      vision = MapVision(
+          center: LatLng(widget.embedMapVision.center.latitude,
+              widget.embedMapVision.center.longitude),
+          zoom: widget.embedMapVision.zoom);
+    } else {
+      Position position = await Geolocator.getCurrentPosition();
+      vision = MapVision(
+          center: LatLng(position.latitude, position.longitude), zoom: 13);
+    }
     await _setCurrentMapVision(vision);
     _goCurrentMapVision();
     await _generateShowMapChildren();
