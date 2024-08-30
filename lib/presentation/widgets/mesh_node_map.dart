@@ -115,7 +115,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
               ),
               const SizedBox(height: 8),
               FloatingActionButton(
-                mini: _appSettingMap.miniButton,
+                mini: _appSettingMap.miniButton || widget.isEmbed,
                 onPressed: _pressQuestionButton,
                 backgroundColor: Colors.blue,
                 child: const Icon(Icons.question_mark),
@@ -123,7 +123,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
               const SizedBox(height: 8),
               if (widget.isEmbed) ...[
                 FloatingActionButton(
-                  mini: _appSettingMap.miniButton,
+                  mini: _appSettingMap.miniButton || widget.isEmbed,
                   onPressed: () {
                     launchUrl(Uri.parse(
                         GlobalConfiguration().getDeepValue('app:url')));
@@ -133,7 +133,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                 ),
               ] else ...[
                 FloatingActionButton(
-                  mini: _appSettingMap.miniButton,
+                  mini: _appSettingMap.miniButton || widget.isEmbed,
                   onPressed: _pressShareButton,
                   backgroundColor: Colors.blue,
                   child: const Icon(Icons.share),
