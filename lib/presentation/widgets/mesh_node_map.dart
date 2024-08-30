@@ -129,7 +129,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                         GlobalConfiguration().getDeepValue('app:url')));
                   },
                   backgroundColor: Colors.blue,
-                  child: Image.asset('images/app_icon.png'),
+                  child: Image.asset('assets/images/app_icon.png'),
                 ),
               ] else ...[
                 FloatingActionButton(
