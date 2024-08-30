@@ -34,5 +34,16 @@ class AppRouter extends $AppRouter {
             ),
           ],
         ),
+        AutoRoute(
+          path: '/embed',
+          page: EmptyRouter.page,
+          children: [
+            AutoRoute(
+              path: 'map/:latitude/:longitude/:zoom', page: EmbedMapRoute.page,
+              maintainState: true, // 當路由切換時保持狀態
+            ),
+          ],
+        ),
+        RedirectRoute(path: '/*', redirectTo: '/'),
       ];
 }

@@ -5,11 +5,14 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:flutter_map_marker_cluster_2/flutter_map_marker_cluster.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart'
+    show Clipboard, ClipboardData, rootBundle;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:logging_flutter/logging_flutter.dart';
 import 'package:meshsightapp/core/models/app_setting_map.dart';
@@ -23,7 +26,12 @@ import '../../core/utils/shared_preferences_util.dart';
 import '../../localization/generated/l10n.dart';
 
 class MeshNodeMap extends StatefulWidget {
-  const MeshNodeMap({super.key});
+  final bool isEmbed;
+  final MapVision embedMapVision;
+  const MeshNodeMap(
+      {super.key,
+      this.isEmbed = false,
+      this.embedMapVision = const MapVision()});
   @override
   State<StatefulWidget> createState() => _MeshNodeMapState();
 }
@@ -112,6 +120,25 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                 backgroundColor: Colors.blue,
                 child: const Icon(Icons.question_mark),
               ),
+              const SizedBox(height: 8),
+              if (widget.isEmbed) ...[
+                FloatingActionButton(
+                  mini: _appSettingMap.miniButton,
+                  onPressed: () {
+                    launchUrl(Uri.parse(
+                        GlobalConfiguration().getDeepValue('app:url')));
+                  },
+                  backgroundColor: Colors.blue,
+                  child: Image.asset('images/app_icon.png'),
+                ),
+              ] else ...[
+                FloatingActionButton(
+                  mini: _appSettingMap.miniButton,
+                  onPressed: _pressShareButton,
+                  backgroundColor: Colors.blue,
+                  child: const Icon(Icons.share),
+                ),
+              ],
             ],
           ),
         ),
@@ -203,7 +230,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
             'This project is not affiliated with or endorsed by the Meshtastic project.\n'
             'The Meshtastic logo is the trademark of Meshtastic LLC.',
             prependCopyright: false,
-            textStyle: TextStyle(fontSize: 8),
+            textStyle: TextStyle(fontSize: 12),
           ),
           TextSourceAttribution(
             GlobalConfiguration().getDeepValue(
@@ -281,6 +308,12 @@ class _MeshNodeMapState extends State<MeshNodeMap>
   }
 
   Future<void> _setCurrentMapVision(MapVision vision) async {
+    if (widget.isEmbed) {
+      setState(() {
+        _currentMapVision = widget.embedMapVision;
+      });
+      return;
+    }
     setState(() {
       _currentMapVision = vision;
       _showNodeCover = vision.zoom >= 9.5;
@@ -687,6 +720,81 @@ class _MeshNodeMapState extends State<MeshNodeMap>
               },
             ),
           ],
+        );
+      },
+    );
+  }
+
+  Future<void> _pressShareButton() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Center(
+            child: Text('share'),
+          ),
+          content: SingleChildScrollView(
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                GFButton(
+                  onPressed: () {
+                    launchUrl(Uri.parse(
+                        'https://www.facebook.com/sharer/sharer.php?u=${GlobalConfiguration().getDeepValue('app:url')}'));
+                  },
+                  text: "Facebook",
+                  icon: const Icon(Icons.facebook),
+                  shape: GFButtonShape.pills,
+                ),
+                GFButton(
+                  onPressed: () {
+                    launchUrl(Uri.parse(
+                        'https://x.com/intent/post?url=${GlobalConfiguration().getDeepValue('app:url')}'));
+                  },
+                  text: "X.com",
+                  icon: const FaIcon(FontAwesomeIcons.x),
+                  shape: GFButtonShape.pills,
+                ),
+                GFButton(
+                  onPressed: () {
+                    launchUrl(Uri.parse(
+                        'https://wa.me/?text=${GlobalConfiguration().getDeepValue('app:url')}'));
+                  },
+                  text: "WhatsApp",
+                  icon: const FaIcon(FontAwesomeIcons.whatsapp),
+                  shape: GFButtonShape.pills,
+                ),
+                GFButton(
+                  onPressed: () {
+                    // 複製到剪貼簿
+                    Clipboard.setData(ClipboardData(
+                        text: GlobalConfiguration().getDeepValue('app:url')));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(S.current.AlreadyCopied2Clipboard),
+                    ));
+                  },
+                  text: "URL",
+                  icon: const Icon(Icons.link),
+                  shape: GFButtonShape.pills,
+                ),
+                GFButton(
+                  onPressed: () {
+                    // 複製到剪貼簿
+                    Clipboard.setData(ClipboardData(
+                        text:
+                            "<iframe src=\"${GlobalConfiguration().getDeepValue('app:url')}/#/embed/map/${_currentMapVision.center.latitude}/${_currentMapVision.center.longitude}/${_currentMapVision.zoom}\"></iframe>"));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(S.current.AlreadyCopied2Clipboard),
+                    ));
+                  },
+                  text: "iframe",
+                  icon: const Icon(Icons.html),
+                  shape: GFButtonShape.pills,
+                ),
+              ],
+            ),
+          ),
         );
       },
     );

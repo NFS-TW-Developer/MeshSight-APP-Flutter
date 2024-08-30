@@ -38,6 +38,7 @@ dependencies:
   particles_fly: ^0.0.9
   fl_chart: ^0.68.0
   flutter_map_marker_cluster_2: ^1.0.4
+  font_awesome_flutter: ^10.7.0
 dev_dependencies:
   auto_route_generator: ^8.0.0
   build_runner:

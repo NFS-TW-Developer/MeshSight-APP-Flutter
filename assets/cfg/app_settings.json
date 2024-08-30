@@ -1,4 +1,7 @@
 {
+  "app": {
+    "url": "https://meshsight.nfs.tw"
+  },
   "api": {
     "server": {
       "default": {

@@ -74,7 +74,7 @@ class IndexSettingViewModel extends BaseViewModel {
       }
       setBusy(false);
     } catch (e) {
-      globalViewModel.showStatusSnackBar(context,
+      showStatusSnackBar(
           AppStatusMessage(status: false, message: S.current.ApiErrorMsg1));
     }
   }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../core/app_core.dart';
+import '../../core/models/app_status_message.dart';
 import '../../core/services/localization_service.dart';
+import '../../localization/generated/l10n.dart';
 import 'global_view_model.dart';
 
 class BaseViewModel extends ChangeNotifier {
@@ -44,6 +46,19 @@ class BaseViewModel extends ChangeNotifier {
 
   // 顯示ScaffoldMessenger
   void showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+    ));
+  }
+
+  // 顯示 StatusSnackBar
+  void showStatusSnackBar(AppStatusMessage response) {
+    String? message = response.message;
+    if (response.status) {
+      message = '${S.current.Successful}${message != null ? ': $message' : ''}';
+    } else {
+      message = '${S.current.Failed}${message != null ? ': $message' : ''}';
+    }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(message),
     ));
