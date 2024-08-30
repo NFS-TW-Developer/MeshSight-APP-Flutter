@@ -50,6 +50,7 @@ flutter:
   assets:
     - assets/
     - assets/cfg/
+    - assets/images/
     - assets/images/meshtastic/device/
 flutter_intl:
   enabled: true

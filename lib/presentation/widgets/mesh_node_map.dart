@@ -730,9 +730,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Center(
-            child: Text('share'),
-          ),
+          title: Center(child: Text(S.current.Share)),
           content: SingleChildScrollView(
             child: Wrap(
               spacing: 8,
@@ -783,7 +781,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                     // 複製到剪貼簿
                     Clipboard.setData(ClipboardData(
                         text:
-                            "<iframe src=\"${GlobalConfiguration().getDeepValue('app:url')}/#/embed/map/${_currentMapVision.center.latitude}/${_currentMapVision.center.longitude}/${_currentMapVision.zoom}\"></iframe>"));
+                            "<iframe width=\"1000\" height=\"500\" src=\"${GlobalConfiguration().getDeepValue('app:url')}/#/embed/map/${_currentMapVision.center.latitude}/${_currentMapVision.center.longitude}/${_currentMapVision.zoom}\"></iframe>"));
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text(S.current.AlreadyCopied2Clipboard),
                     ));
