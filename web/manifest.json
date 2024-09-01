@@ -1,11 +1,11 @@
 {
-    "name": "MeshSight APP - Third-Party Meshtastic Node Map",
+    "name": "MeshSight APP - Third-Party Meshtastic Node Insights",
     "short_name": "MeshSight APP",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "MeshSight is a third-party project that visually presents map information for Meshtastic nodes.",
+    "description": "MeshSight is a third-party project that visually presents information for Meshtastic nodes.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
