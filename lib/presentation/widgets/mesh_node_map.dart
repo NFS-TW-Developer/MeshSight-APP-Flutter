@@ -550,10 +550,13 @@ class _MeshNodeMapState extends State<MeshNodeMap>
     showMapChildren.add(
       MarkerClusterLayerWidget(
         options: MarkerClusterLayerOptions(
-          showPolygon: false,
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(32),
           markers: nodeMarker,
+          size: const Size(36, 36),
+          alignment: Alignment.center,
+          polygonOptions: PolygonOptions(
+              borderColor: Colors.blueAccent,
+              color: Colors.black.withOpacity(0.22),
+              borderStrokeWidth: 2),
           centerMarkerOnClick: false,
           builder: (context, markers) {
             return Container(
@@ -573,8 +576,11 @@ class _MeshNodeMapState extends State<MeshNodeMap>
               ),
               child: Center(
                 child: Text(
-                  markers.length.toString(),
-                  style: const TextStyle(color: Colors.white),
+                  (markers.length > 999)
+                      ? '${(markers.length / 1000).toStringAsFixed(1)}K'
+                      : markers.length.toString(),
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
             );
