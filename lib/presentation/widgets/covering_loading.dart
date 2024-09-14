@@ -26,7 +26,7 @@ class CoveringLoading extends StatelessWidget {
               alignment: Alignment.center,
               child: SizedBox(
                 width: 320,
-                child: Image.asset('assets/images/logo.png'),
+                child: Image.asset('assets/images/app_icon.png'),
               ),
             ),
             const SizedBox(height: 32),

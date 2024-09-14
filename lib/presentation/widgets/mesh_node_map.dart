@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:flutter_map_marker_cluster_2/flutter_map_marker_cluster.dart';
@@ -24,6 +25,7 @@ import '../../core/models/map_vision.dart';
 import '../../core/services/meshsight_gateway_api_service.dart';
 import '../../core/utils/shared_preferences_util.dart';
 import '../../localization/generated/l10n.dart';
+import '../../router/app_router.gr.dart';
 
 class MeshNodeMap extends StatefulWidget {
   final bool isEmbed;
@@ -1484,6 +1486,12 @@ class _MeshNodeMapState extends State<MeshNodeMap>
               child: Text(S.current.IUnderstand),
               onPressed: () {
                 Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(S.current.NodeDetail),
+              onPressed: () {
+                AutoRouter.of(context).push(NodeDetailRoute(nodeId: nodeId));
               },
             ),
           ],

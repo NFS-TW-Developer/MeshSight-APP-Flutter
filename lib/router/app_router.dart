@@ -36,11 +36,21 @@ class AppRouter extends $AppRouter {
         ),
         AutoRoute(
           path: '/embed',
-          page: EmptyRouter.page,
+          page: EmbedRouter.page,
           children: [
             AutoRoute(
               path: 'map/:latitude/:longitude/:zoom', page: EmbedMapRoute.page,
               maintainState: true, // 當路由切換時保持狀態
+            ),
+          ],
+        ),
+        AutoRoute(
+          path: '/node',
+          page: NodeRouter.page,
+          children: [
+            AutoRoute(
+              path: 'detail/:nodeId', page: NodeDetailRoute.page,
+              maintainState: false, // 當路由切換時保持狀態
             ),
           ],
         ),

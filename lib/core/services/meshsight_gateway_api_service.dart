@@ -202,4 +202,60 @@ class MeshsightGatewayApiService {
       return null;
     }
   }
+
+  Future<Map<String, dynamic>?> nodeInfo(int nodeId) async {
+    try {
+      http.Response response;
+      // 重複嘗試，如果成功就不再重複，以確保資料取得，避免因網路問題導致資料取得失敗
+      int doCount = 1; // 重複次數
+      int doLimit = 3; // 重複上限
+      do {
+        response = await _performRequest(
+          http.Request('GET', await _buildGeneralUri('v1/node/info/$nodeId')),
+          timeout: _generalTimeout,
+        );
+        if (response.statusCode == 200) {
+          // 資料取得成功，跳出
+          break;
+        }
+        doCount++;
+      } while (doCount <= doLimit);
+      return jsonDecode(utf8.decode(response.bodyBytes));
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> nodeTelemetryDevice(int nodeId,
+      {DateTime? start, DateTime? end}) async {
+    try {
+      http.Response response;
+      // 重複嘗試，如果成功就不再重複，以確保資料取得，避免因網路問題導致資料取得失敗
+      int doCount = 1; // 重複次數
+      int doLimit = 3; // 重複上限
+      do {
+        response = await _performRequest(
+          http.Request(
+            'GET',
+            await _buildGeneralUri(
+              'v1/node/telemetry/device/$nodeId',
+              queryParams: {
+                if (start != null) 'start': start.toIso8601String(),
+                if (end != null) 'end': end.toIso8601String(),
+              },
+            ),
+          ),
+          timeout: _generalTimeout,
+        );
+        if (response.statusCode == 200) {
+          // 資料取得成功，跳出
+          break;
+        }
+        doCount++;
+      } while (doCount <= doLimit);
+      return jsonDecode(utf8.decode(response.bodyBytes));
+    } catch (e) {
+      return null;
+    }
+  }
 }
