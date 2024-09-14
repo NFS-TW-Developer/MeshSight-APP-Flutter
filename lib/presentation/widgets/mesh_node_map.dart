@@ -425,74 +425,6 @@ class _MeshNodeMapState extends State<MeshNodeMap>
       nodeMarker = nodeMarker.reversed.toList();
     }
 
-    // 產生節點連線
-    if (_showNodeLine && _appSettingMap.lineVisible) {
-      List<dynamic> nodeLine = _mapCoordinatesData['nodeLine'];
-      for (var line in nodeLine) {
-        Map<String, dynamic>? nodeA = _mapCoordinatesData['items'].firstWhere(
-            (element) => element['id'] == line[0],
-            orElse: () => null);
-        Map<String, dynamic>? nodeB = _mapCoordinatesData['items'].firstWhere(
-            (element) => element['id'] == line[1],
-            orElse: () => null);
-        if (nodeA == null || nodeB == null) {
-          continue;
-        }
-        Map<String, dynamic>? nodeAPosition = nodeA['positions'][0];
-        Map<String, dynamic>? nodeBPosition = nodeB['positions'][0];
-        if (nodeAPosition == null || nodeBPosition == null) {
-          continue;
-        }
-        LatLng nodeAPoint = LatLng(
-            double.tryParse(nodeAPosition['latitude'].toString()) ?? 0.0,
-            double.tryParse(nodeAPosition['longitude'].toString()) ?? 0.0);
-        LatLng nodeBPoint = LatLng(
-            double.tryParse(nodeBPosition['latitude'].toString()) ?? 0.0,
-            double.tryParse(nodeBPosition['longitude'].toString()) ?? 0.0);
-        // 檢查節點是否在視野內
-        if (!_isInCurrentMapVision(nodeAPoint) &&
-            !_isInCurrentMapVision(nodeBPoint)) {
-          continue;
-        }
-        nodeLineChildren.add(
-            _generatePolyline(nodeAPoint, nodeBPoint, color: Colors.redAccent));
-      }
-    }
-
-    // 產生節點連線 Neighbor
-    if (_showNodeLine && _appSettingMap.lineVisible) {
-      List<dynamic> nodeLine = _mapCoordinatesData['nodeLineNeighbor'];
-      for (var line in nodeLine) {
-        Map<String, dynamic>? nodeA = _mapCoordinatesData['items'].firstWhere(
-            (element) => element['id'] == line[0],
-            orElse: () => null);
-        Map<String, dynamic>? nodeB = _mapCoordinatesData['items'].firstWhere(
-            (element) => element['id'] == line[1],
-            orElse: () => null);
-        if (nodeA == null || nodeB == null) {
-          continue;
-        }
-        Map<String, dynamic>? nodeAPosition = nodeA['positions'][0];
-        Map<String, dynamic>? nodeBPosition = nodeB['positions'][0];
-        if (nodeAPosition == null || nodeBPosition == null) {
-          continue;
-        }
-        LatLng nodeAPoint = LatLng(
-            double.tryParse(nodeAPosition['latitude'].toString()) ?? 0.0,
-            double.tryParse(nodeAPosition['longitude'].toString()) ?? 0.0);
-        LatLng nodeBPoint = LatLng(
-            double.tryParse(nodeBPosition['latitude'].toString()) ?? 0.0,
-            double.tryParse(nodeBPosition['longitude'].toString()) ?? 0.0);
-        // 檢查節點是否在視野內
-        if (!_isInCurrentMapVision(nodeAPoint) &&
-            !_isInCurrentMapVision(nodeBPoint)) {
-          continue;
-        }
-        nodeLineNeighborChildren.add(_generatePolyline(nodeAPoint, nodeBPoint,
-            color: Colors.blueAccent));
-      }
-    }
-
     // 產生節點覆蓋
     if (_showNodeCover && _appSettingMap.coverVisible) {
       List<dynamic> nodeCoverage = _mapCoordinatesData['nodeCoverage'];
@@ -534,6 +466,74 @@ class _MeshNodeMapState extends State<MeshNodeMap>
         }
         nodeCoverChildren
             .add(_generatePolygon(nodeAPoint, nodeBPoint, nodeCPoint));
+      }
+    }
+
+    // 產生節點連線 Neighbor
+    if (_showNodeLine && _appSettingMap.lineVisible) {
+      List<dynamic> nodeLine = _mapCoordinatesData['nodeLineNeighbor'];
+      for (var line in nodeLine) {
+        Map<String, dynamic>? nodeA = _mapCoordinatesData['items'].firstWhere(
+            (element) => element['id'] == line[0],
+            orElse: () => null);
+        Map<String, dynamic>? nodeB = _mapCoordinatesData['items'].firstWhere(
+            (element) => element['id'] == line[1],
+            orElse: () => null);
+        if (nodeA == null || nodeB == null) {
+          continue;
+        }
+        Map<String, dynamic>? nodeAPosition = nodeA['positions'][0];
+        Map<String, dynamic>? nodeBPosition = nodeB['positions'][0];
+        if (nodeAPosition == null || nodeBPosition == null) {
+          continue;
+        }
+        LatLng nodeAPoint = LatLng(
+            double.tryParse(nodeAPosition['latitude'].toString()) ?? 0.0,
+            double.tryParse(nodeAPosition['longitude'].toString()) ?? 0.0);
+        LatLng nodeBPoint = LatLng(
+            double.tryParse(nodeBPosition['latitude'].toString()) ?? 0.0,
+            double.tryParse(nodeBPosition['longitude'].toString()) ?? 0.0);
+        // 檢查節點是否在視野內
+        if (!_isInCurrentMapVision(nodeAPoint) &&
+            !_isInCurrentMapVision(nodeBPoint)) {
+          continue;
+        }
+        nodeLineNeighborChildren.add(_generatePolyline(nodeAPoint, nodeBPoint,
+            color: Colors.blueAccent));
+      }
+    }
+
+    // 產生節點連線
+    if (_showNodeLine && _appSettingMap.lineVisible) {
+      List<dynamic> nodeLine = _mapCoordinatesData['nodeLine'];
+      for (var line in nodeLine) {
+        Map<String, dynamic>? nodeA = _mapCoordinatesData['items'].firstWhere(
+            (element) => element['id'] == line[0],
+            orElse: () => null);
+        Map<String, dynamic>? nodeB = _mapCoordinatesData['items'].firstWhere(
+            (element) => element['id'] == line[1],
+            orElse: () => null);
+        if (nodeA == null || nodeB == null) {
+          continue;
+        }
+        Map<String, dynamic>? nodeAPosition = nodeA['positions'][0];
+        Map<String, dynamic>? nodeBPosition = nodeB['positions'][0];
+        if (nodeAPosition == null || nodeBPosition == null) {
+          continue;
+        }
+        LatLng nodeAPoint = LatLng(
+            double.tryParse(nodeAPosition['latitude'].toString()) ?? 0.0,
+            double.tryParse(nodeAPosition['longitude'].toString()) ?? 0.0);
+        LatLng nodeBPoint = LatLng(
+            double.tryParse(nodeBPosition['latitude'].toString()) ?? 0.0,
+            double.tryParse(nodeBPosition['longitude'].toString()) ?? 0.0);
+        // 檢查節點是否在視野內
+        if (!_isInCurrentMapVision(nodeAPoint) &&
+            !_isInCurrentMapVision(nodeBPoint)) {
+          continue;
+        }
+        nodeLineChildren.add(
+            _generatePolyline(nodeAPoint, nodeBPoint, color: Colors.redAccent));
       }
     }
 
