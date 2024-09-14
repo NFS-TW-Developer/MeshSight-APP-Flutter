@@ -1405,7 +1405,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                                 padding: const EdgeInsets.all(4.0),
                                 child: Row(
                                   children: [
-                                    if (x['viaId'] == x['nodeId']) ...[
+                                    if (x['viaId'] == node['id']) ...[
                                       AutoSizeText('self',
                                           group: textSizeGroup1),
                                     ] else ...[
