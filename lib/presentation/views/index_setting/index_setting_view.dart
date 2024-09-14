@@ -211,11 +211,11 @@ class IndexSettingView extends StatelessWidget {
                     max: model.apiAppSettingData[
                                 'meshtasticPositionMaxQueryPeriod']
                             ?.toDouble() ??
-                        24,
+                        48,
                     divisions: model.apiAppSettingData[
                                 'meshtasticPositionMaxQueryPeriod']
                             ?.toInt() ??
-                        24,
+                        48,
                     label:
                         "${model.appSettingMap.nodeMaxAgeInHours.toString()} ${S.current.Hour}",
                     onChanged: (value) {
@@ -238,11 +238,11 @@ class IndexSettingView extends StatelessWidget {
                     max: model.apiAppSettingData[
                                 'meshtasticNeighborinfoMaxQueryPeriod']
                             ?.toDouble() ??
-                        24,
+                        48,
                     divisions: model.apiAppSettingData[
                                 'meshtasticNeighborinfoMaxQueryPeriod']
                             ?.toInt() ??
-                        24,
+                        48,
                     label:
                         "${model.appSettingMap.nodeNeighborMaxAgeInHours.toString()} ${S.current.Hour}",
                     onChanged: (value) {

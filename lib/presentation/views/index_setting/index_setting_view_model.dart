@@ -66,7 +66,7 @@ class IndexSettingViewModel extends BaseViewModel {
             nodeMaxAgeInHours:
                 _apiAppSettingData['meshtasticPositionMaxQueryPeriod']));
       }
-      if (_appSettingMap.nodeMaxAgeInHours >
+      if (_appSettingMap.nodeNeighborMaxAgeInHours >
           _apiAppSettingData['meshtasticNeighborinfoMaxQueryPeriod']) {
         await setAppSettingMap(AppSettingMap(
             nodeMaxAgeInHours:
