@@ -9,8 +9,8 @@ import 'global_view_model.dart';
 class BaseViewModel extends ChangeNotifier {
   final GlobalViewModel globalViewModel = appLocator<GlobalViewModel>();
 
-  bool _busy = false; // 是否忙碌中
-  bool get busy => _busy;
+  ValueNotifier<bool> _busy = ValueNotifier<bool>(false); // 是否忙碌中
+  ValueNotifier<bool> get busy => _busy;
 
   bool _disposed = false; // 是否已經被釋放
   bool get disposed => _disposed;
@@ -30,7 +30,7 @@ class BaseViewModel extends ChangeNotifier {
   }
 
   void setBusy(bool value) {
-    _busy = value;
+    _busy = ValueNotifier<bool>(value);
     notifyListeners();
   }
 
@@ -38,6 +38,10 @@ class BaseViewModel extends ChangeNotifier {
     globalViewModel.initGlobalViewModel();
     setBusy(true);
     _context = context;
+    // 初始化時清除 SnackBar
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => ScaffoldMessenger.of(context).clearSnackBars(),
+    );
     // 初始化時重新載入語言
     LocalizationService localizationService = appLocator<LocalizationService>();
     localizationService.loadAppLocale();
@@ -45,10 +49,16 @@ class BaseViewModel extends ChangeNotifier {
   }
 
   // 顯示ScaffoldMessenger
-  void showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
-    ));
+  void showSnackBar(
+    String message, {
+    SnackBarAction? action,
+    Duration duration = const Duration(seconds: 3),
+  }) {
+    if (disposed) return;
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), action: action, duration: duration),
+    );
   }
 
   // 顯示 StatusSnackBar
@@ -59,8 +69,6 @@ class BaseViewModel extends ChangeNotifier {
     } else {
       message = '${S.current.Failed}${message != null ? ': $message' : ''}';
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message),
-    ));
+    showSnackBar(message);
   }
 }
