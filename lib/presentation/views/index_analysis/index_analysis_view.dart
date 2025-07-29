@@ -36,7 +36,8 @@ class IndexAnalysisView extends StatelessWidget {
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
+                            color: Colors.grey
+                                .withValues(alpha: (0.5 * 255).toDouble()),
                             spreadRadius: 5,
                             blurRadius: 7,
                             offset: const Offset(0, 3),
@@ -84,7 +85,7 @@ class IndexAnalysisView extends StatelessWidget {
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
+                            color: Colors.grey.withValues(alpha: (0.5 * 255).toDouble()),
                             spreadRadius: 5,
                             blurRadius: 7,
                             offset: const Offset(0, 3),
@@ -113,7 +114,7 @@ class IndexAnalysisView extends StatelessWidget {
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
+                              color: Colors.grey.withValues(alpha: (0.5 * 255).toDouble()),
                               spreadRadius: 5,
                               blurRadius: 7,
                               offset: const Offset(0, 3)),
@@ -141,7 +142,7 @@ class IndexAnalysisView extends StatelessWidget {
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
+                              color: Colors.grey.withValues(alpha: (0.5 * 255).toDouble()),
                               spreadRadius: 5,
                               blurRadius: 7,
                               offset: const Offset(0, 3)),

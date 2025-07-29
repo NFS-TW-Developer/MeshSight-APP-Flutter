@@ -16,7 +16,7 @@ class CoveringLoading extends StatelessWidget {
         // Positioned.fill 會將子元素填滿其父元素的空間
         Positioned.fill(
           child: Container(
-            color: Colors.white.withOpacity(0.9),
+            color: Colors.white.withValues(alpha: (0.9 * 255).toDouble()),
           ),
         ),
         Column(

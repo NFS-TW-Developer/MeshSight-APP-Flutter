@@ -557,7 +557,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
           alignment: Alignment.center,
           polygonOptions: PolygonOptions(
               borderColor: Colors.blueAccent,
-              color: Colors.black.withOpacity(0.22),
+              color: Colors.black.withValues(alpha: (0.22 * 255).toDouble()),
               borderStrokeWidth: 2),
           centerMarkerOnClick: false,
           builder: (context, markers) {
@@ -687,7 +687,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                           ' ▲  ',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: Colors.green.withOpacity(0.22),
+                              color: Colors.green.withValues(alpha: (0.22 * 255).toDouble()),
                               fontWeight: FontWeight.bold),
                         ),
                         Text(S.current.MapNodeCoverLegend),
@@ -879,7 +879,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(2),
                     border: Border.all(
-                      color: Colors.black.withOpacity(0.56),
+                      color: Colors.black.withValues(alpha: (0.56 * 255).toDouble()),
                       width: 1,
                     ),
                   ),
@@ -928,7 +928,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
       LatLng point, int precisionInMeters, int nodeId) {
     return CircleMarker(
       point: point,
-      color: Colors.orange.withOpacity(0.22),
+      color: Colors.orange.withValues(alpha: (0.22 * 255).toDouble()),
       borderColor: Colors.orange,
       borderStrokeWidth: 2,
       useRadiusInMeter: true,
@@ -978,7 +978,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
             pointB,
           ],
           strokeWidth: 2,
-          color: color.withOpacity(0.78),
+          color: color.withValues(alpha: (0.78 * 255).toDouble()),
           pattern: StrokePattern.dashed(
             segments: segments,
           ),
@@ -1001,7 +1001,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
             pointB,
             pointC,
           ],
-          color: Colors.green.withOpacity(0.22),
+          color: Colors.green.withValues(alpha: (0.22 * 255).toDouble()),
         ),
       ],
     );

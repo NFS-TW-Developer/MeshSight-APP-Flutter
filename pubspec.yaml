@@ -3,7 +3,7 @@ description: "MeshSight APP"
 publish_to: "none"
 version: 0.7.0+240915312
 environment:
-  sdk: ">=3.4.4 <4.0.0"
+  sdk: ">=3.7.2 <4.0.0"
 dependencies:
   flutter:
     sdk: flutter
@@ -32,7 +32,7 @@ dependencies:
   flutter_map_cancellable_tile_provider: ^3.0.0
   geolocator: ^13.0.1
   url_launcher: ^6.3.0
-  getwidget: ^4.0.0
+  getwidget: ^6.0.0
   latlong2: ^0.9.1
   auto_size_text: ^3.0.0
   particles_fly: ^0.0.9
