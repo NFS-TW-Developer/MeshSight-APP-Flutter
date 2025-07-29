@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging_flutter/logging_flutter.dart';
-import 'package:meshsightapp/core/models/app_setting_api.dart';
 
+import '../models/app_setting_api.dart';
 import '../utils/shared_preferences_util.dart';
 
 class MeshsightGatewayApiService {
@@ -12,13 +12,16 @@ class MeshsightGatewayApiService {
       GlobalConfiguration().getDeepValue("api:timeout").toDouble();
   // 將錯誤處理抽象化到一個單獨的方法中，避免在每個 API 請求中重複相同的錯誤處理代碼
   // 當錯誤發生時，則拋出錯誤，以便在後續進行處理
-  Future<http.Response> _performRequest(http.BaseRequest request,
-      {double timeout = 60}) async {
+  Future<http.Response> _performRequest(
+    http.BaseRequest request, {
+    double timeout = 60,
+  }) async {
     try {
       // 取得 request 的 method 和 body
-      String requestBody = request is http.Request
-          ? request.body
-          : (request as http.MultipartRequest).fields.toString();
+      String requestBody =
+          request is http.Request
+              ? request.body
+              : (request as http.MultipartRequest).fields.toString();
       http.StreamedResponse streamedResponse = await (request is http.Request
               ? request.send()
               : (request as http.MultipartRequest).send())
@@ -37,8 +40,11 @@ class MeshsightGatewayApiService {
   }
 
   // 將 URL 的構建抽象化到一個單獨的方法中，避免在每個 API 請求中重複相同的 URL 構建代碼
-  Future<Uri> _buildGeneralUri(String path,
-      {Map<String, dynamic>? queryParams, bool isEmbed = false}) async {
+  Future<Uri> _buildGeneralUri(
+    String path, {
+    Map<String, dynamic>? queryParams,
+    bool isEmbed = false,
+  }) async {
     AppSettingApi appSettingApi =
         await SharedPreferencesUtil.getAppSettingApi();
     String baseURL = appSettingApi.apiUrl;
@@ -82,16 +88,20 @@ class MeshsightGatewayApiService {
 
   // 將 Map<String, dynamic> 轉為 'application/x-www-form-urlencoded' 格式的字串
   String encodeMapToUrlFormEncoded(Map<String, dynamic> json) {
-    return json.keys.map((key) {
-      var value = Uri.encodeComponent(json[key].toString());
-      return '$key=$value';
-    }).join('&');
+    return json.keys
+        .map((key) {
+          var value = Uri.encodeComponent(json[key].toString());
+          return '$key=$value';
+        })
+        .join('&');
   }
 
   /// 以下為各項 API Function
 
-  Future<Map<String, dynamic>?> analysisActiveHourlyRecords(
-      {DateTime? start, DateTime? end}) async {
+  Future<Map<String, dynamic>?> analysisActiveHourlyRecords({
+    DateTime? start,
+    DateTime? end,
+  }) async {
     try {
       http.Response response;
       // 重複嘗試，如果成功就不再重複，以確保資料取得，避免因網路問題導致資料取得失敗
@@ -100,12 +110,15 @@ class MeshsightGatewayApiService {
       do {
         response = await _performRequest(
           http.Request(
-              'GET',
-              await _buildGeneralUri('v1/analysis/active-hourly-records',
-                  queryParams: {
-                    if (start != null) 'start': start.toIso8601String(),
-                    if (end != null) 'end': end.toIso8601String(),
-                  })),
+            'GET',
+            await _buildGeneralUri(
+              'v1/analysis/active-hourly-records',
+              queryParams: {
+                if (start != null) 'start': start.toIso8601String(),
+                if (end != null) 'end': end.toIso8601String(),
+              },
+            ),
+          ),
           timeout: _generalTimeout,
         );
         if (response.statusCode == 200) {
@@ -129,7 +142,9 @@ class MeshsightGatewayApiService {
       do {
         response = await _performRequest(
           http.Request(
-              'GET', await _buildGeneralUri('v1/analysis/distribution/$type')),
+            'GET',
+            await _buildGeneralUri('v1/analysis/distribution/$type'),
+          ),
           timeout: _generalTimeout,
         );
         if (response.statusCode == 200) {
@@ -167,11 +182,13 @@ class MeshsightGatewayApiService {
     }
   }
 
-  Future<Map<String, dynamic>?> mapCoordinates(
-      {DateTime? start,
-      DateTime? end,
-      int? reportNodeHours,
-      bool isEmbed = false}) async {
+  Future<Map<String, dynamic>?> mapCoordinates({
+    DateTime? start,
+    DateTime? end,
+    int? reportNodeHours,
+    List<String>? loraModemPresetList,
+    bool isEmbed = false,
+  }) async {
     try {
       http.Response response;
       // 重複嘗試，如果成功就不再重複，以確保資料取得，避免因網路問題導致資料取得失敗
@@ -180,15 +197,20 @@ class MeshsightGatewayApiService {
       do {
         response = await _performRequest(
           http.Request(
-              'GET',
-              await _buildGeneralUri('v1/map/coordinates',
-                  queryParams: {
-                    if (start != null) 'start': start.toIso8601String(),
-                    if (end != null) 'end': end.toIso8601String(),
-                    if (reportNodeHours != null)
-                      'reportNodeHours': reportNodeHours.toString(),
-                  },
-                  isEmbed: isEmbed)),
+            'GET',
+            await _buildGeneralUri(
+              'v1/map/coordinates',
+              queryParams: {
+                if (start != null) 'start': start.toIso8601String(),
+                if (end != null) 'end': end.toIso8601String(),
+                if (reportNodeHours != null)
+                  'reportNodeHours': reportNodeHours.toString(),
+                if (loraModemPresetList != null)
+                  'loraModemPresetList': loraModemPresetList.join(','),
+              },
+              isEmbed: isEmbed,
+            ),
+          ),
           timeout: _generalTimeout,
         );
         if (response.statusCode == 200) {
@@ -226,8 +248,11 @@ class MeshsightGatewayApiService {
     }
   }
 
-  Future<Map<String, dynamic>?> nodeTelemetryDevice(int nodeId,
-      {DateTime? start, DateTime? end}) async {
+  Future<Map<String, dynamic>?> nodeTelemetryDevice(
+    int nodeId, {
+    DateTime? start,
+    DateTime? end,
+  }) async {
     try {
       http.Response response;
       // 重複嘗試，如果成功就不再重複，以確保資料取得，避免因網路問題導致資料取得失敗

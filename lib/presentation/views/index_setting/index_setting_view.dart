@@ -39,12 +39,14 @@ class IndexSettingView extends StatelessWidget {
                       .getSupportedLocales()
                       .length,
                   (index) {
-                    Locale locale = appLocator<LocalizationService>()
-                        .getSupportedLocales()[index];
+                    Locale locale =
+                        appLocator<LocalizationService>()
+                            .getSupportedLocales()[index];
                     return RadioListTile<Locale>(
                       title: Text(
-                        appLocator<LocalizationService>()
-                            .getLanguageName(locale),
+                        appLocator<LocalizationService>().getLanguageName(
+                          locale,
+                        ),
                       ),
                       value: locale,
                       groupValue: model.currentLocale,
@@ -57,9 +59,10 @@ class IndexSettingView extends StatelessWidget {
               ),
               // API
               BaseExpansionTile(
-                title: model.appSettingApi.apiServer == 'custom'
-                    ? "${S.current.ApiUrl} (${model.appSettingApi.apiUrl})"
-                    : S.current.ApiUrl,
+                title:
+                    model.appSettingApi.apiServer == 'custom'
+                        ? "${S.current.ApiUrl} (${model.appSettingApi.apiUrl})"
+                        : S.current.ApiUrl,
                 children: List.generate(
                   GlobalConfiguration()
                       .getDeepValue('api:server')
@@ -67,13 +70,17 @@ class IndexSettingView extends StatelessWidget {
                       .toList()
                       .length,
                   (index) {
-                    String apiServerKey = GlobalConfiguration()
-                        .getDeepValue('api:server')
-                        .keys
-                        .toList()[index];
+                    String apiServerKey =
+                        GlobalConfiguration()
+                            .getDeepValue('api:server')
+                            .keys
+                            .toList()[index];
                     return RadioListTile<String>(
-                      title: Text(GlobalConfiguration()
-                          .getDeepValue('api:server:$apiServerKey:name')),
+                      title: Text(
+                        GlobalConfiguration().getDeepValue(
+                          'api:server:$apiServerKey:name',
+                        ),
+                      ),
                       value: apiServerKey,
                       groupValue: model.appSettingApi.apiServer,
                       onChanged: (value) {
@@ -99,8 +106,9 @@ class IndexSettingView extends StatelessWidget {
                           model.setAppSettingApi(
                             AppSettingApi(
                               apiServer: value,
-                              apiUrl: GlobalConfiguration()
-                                  .getDeepValue('api:server:$value:url'),
+                              apiUrl: GlobalConfiguration().getDeepValue(
+                                'api:server:$value:url',
+                              ),
                             ),
                           );
                         }
@@ -118,44 +126,45 @@ class IndexSettingView extends StatelessWidget {
               BaseListTitle(title: S.current.Map),
               BaseExpansionTile(
                 title: S.current.MapTileRegion,
-                children: List.generate(
-                  model.mapTileRegionList.length,
-                  (index) {
-                    String tileName = model.mapTileRegionList[index];
-                    return RadioListTile<String>(
-                      title: Text(tileName),
-                      value: model.mapTileRegionList[index],
-                      groupValue: model.appSettingMap.tileRegion,
-                      onChanged: (value) {
-                        model.setAppSettingMap(
-                          model.appSettingMap.copyWith(
-                              tileRegion: value, tileProvider: 'default'),
-                        );
-                      },
-                    );
-                  },
-                ),
+                children: List.generate(model.mapTileRegionList.length, (
+                  index,
+                ) {
+                  String tileName = model.mapTileRegionList[index];
+                  return RadioListTile<String>(
+                    title: Text(tileName),
+                    value: model.mapTileRegionList[index],
+                    groupValue: model.appSettingMap.tileRegion,
+                    onChanged: (value) {
+                      model.setAppSettingMap(
+                        model.appSettingMap.copyWith(
+                          tileRegion: value,
+                          tileProvider: 'default',
+                        ),
+                      );
+                    },
+                  );
+                }),
               ),
               BaseExpansionTile(
                 title: S.current.MapTileProvider,
-                children: List.generate(
-                  model.mapTileProviderList.length,
-                  (index) {
-                    String? tileName = GlobalConfiguration().getDeepValue(
-                        "map:tile:${model.appSettingMap.tileRegion}:${model.mapTileProviderList[index]}:name");
-                    tileName ??= 'Unknown';
-                    return RadioListTile<String>(
-                      title: Text(tileName),
-                      value: model.mapTileProviderList[index],
-                      groupValue: model.appSettingMap.tileProvider,
-                      onChanged: (value) {
-                        model.setAppSettingMap(
-                          model.appSettingMap.copyWith(tileProvider: value),
-                        );
-                      },
-                    );
-                  },
-                ),
+                children: List.generate(model.mapTileProviderList.length, (
+                  index,
+                ) {
+                  String? tileName = GlobalConfiguration().getDeepValue(
+                    "map:tile:${model.appSettingMap.tileRegion}:${model.mapTileProviderList[index]}:name",
+                  );
+                  tileName ??= 'Unknown';
+                  return RadioListTile<String>(
+                    title: Text(tileName),
+                    value: model.mapTileProviderList[index],
+                    groupValue: model.appSettingMap.tileProvider,
+                    onChanged: (value) {
+                      model.setAppSettingMap(
+                        model.appSettingMap.copyWith(tileProvider: value),
+                      );
+                    },
+                  );
+                }),
               ),
               BaseSwitchListTile(
                 title: S.current.MapDarkMode,
@@ -208,12 +217,14 @@ class IndexSettingView extends StatelessWidget {
                   Slider(
                     value: model.appSettingMap.nodeMaxAgeInHours.toDouble(),
                     min: 1,
-                    max: model.apiAppSettingData[
-                                'meshtasticPositionMaxQueryPeriod']
+                    max:
+                        model
+                            .apiAppSettingData['meshtasticPositionMaxQueryPeriod']
                             ?.toDouble() ??
                         48,
-                    divisions: model.apiAppSettingData[
-                                'meshtasticPositionMaxQueryPeriod']
+                    divisions:
+                        model
+                            .apiAppSettingData['meshtasticPositionMaxQueryPeriod']
                             ?.toInt() ??
                         48,
                     label:
@@ -232,15 +243,18 @@ class IndexSettingView extends StatelessWidget {
                 title: S.current.MapNodeNeighborMaxAge,
                 children: [
                   Slider(
-                    value: model.appSettingMap.nodeNeighborMaxAgeInHours
-                        .toDouble(),
+                    value:
+                        model.appSettingMap.nodeNeighborMaxAgeInHours
+                            .toDouble(),
                     min: 1,
-                    max: model.apiAppSettingData[
-                                'meshtasticNeighborinfoMaxQueryPeriod']
+                    max:
+                        model
+                            .apiAppSettingData['meshtasticNeighborinfoMaxQueryPeriod']
                             ?.toDouble() ??
                         48,
-                    divisions: model.apiAppSettingData[
-                                'meshtasticNeighborinfoMaxQueryPeriod']
+                    divisions:
+                        model
+                            .apiAppSettingData['meshtasticNeighborinfoMaxQueryPeriod']
                             ?.toInt() ??
                         48,
                     label:
@@ -267,9 +281,10 @@ class IndexSettingView extends StatelessWidget {
                         Icon(
                           Icons.location_on,
                           size: 40 / 2,
-                          color: (model.appSettingMap.nodeMarkSize == 40)
-                              ? Colors.green
-                              : Colors.grey,
+                          color:
+                              (model.appSettingMap.nodeMarkSize == 40)
+                                  ? Colors.green
+                                  : Colors.grey,
                           shadows: const [
                             Shadow(
                               color: Colors.black,
@@ -282,9 +297,10 @@ class IndexSettingView extends StatelessWidget {
                         Icon(
                           Icons.location_on,
                           size: 64 / 2,
-                          color: (model.appSettingMap.nodeMarkSize == 64)
-                              ? Colors.green
-                              : Colors.grey,
+                          color:
+                              (model.appSettingMap.nodeMarkSize == 64)
+                                  ? Colors.green
+                                  : Colors.grey,
                           shadows: const [
                             Shadow(
                               color: Colors.black,
@@ -297,9 +313,10 @@ class IndexSettingView extends StatelessWidget {
                         Icon(
                           Icons.location_on,
                           size: 88 / 2,
-                          color: (model.appSettingMap.nodeMarkSize == 88)
-                              ? Colors.green
-                              : Colors.grey,
+                          color:
+                              (model.appSettingMap.nodeMarkSize == 88)
+                                  ? Colors.green
+                                  : Colors.grey,
                           shadows: const [
                             Shadow(
                               color: Colors.black,
@@ -318,9 +335,11 @@ class IndexSettingView extends StatelessWidget {
                     divisions: 2,
                     // label: model.mapNodeMarkSize.toString(),
                     onChanged: (value) {
-                      model.setAppSettingMap(model.appSettingMap.copyWith(
-                        nodeMarkSize: value.toInt(),
-                      ));
+                      model.setAppSettingMap(
+                        model.appSettingMap.copyWith(
+                          nodeMarkSize: value.toInt(),
+                        ),
+                      );
                     },
                   ),
                 ],
@@ -333,6 +352,34 @@ class IndexSettingView extends StatelessWidget {
                     model.appSettingMap.copyWith(nodeMarkNameVisible: value),
                   );
                 },
+              ),
+              // 節點 Modem Preset
+              BaseExpansionTile(
+                title: S.current.NodeModemPreset,
+                children: List.generate(model.nodeModemPresetList.length, (
+                  index,
+                ) {
+                  final preset = model.nodeModemPresetList[index];
+                  final selectedPresets =
+                      model.appSettingMap.nodeModemPresetList;
+                  return CheckboxListTile(
+                    title: Text(preset),
+                    value: selectedPresets.contains(preset),
+                    onChanged: (checked) {
+                      List<String> updatedList = List.from(selectedPresets);
+                      if (checked == true) {
+                        updatedList.add(preset);
+                      } else {
+                        updatedList.remove(preset);
+                      }
+                      model.setAppSettingMap(
+                        model.appSettingMap.copyWith(
+                          nodeModemPresetList: updatedList,
+                        ),
+                      );
+                    },
+                  );
+                }),
               ),
               // 外部連結
               BaseListTitle(title: S.current.ExternalLink),
@@ -348,7 +395,8 @@ class IndexSettingView extends StatelessWidget {
                 trailing: const Icon(Icons.open_in_new),
                 onTapFunction: () {
                   launchUrl(
-                      Uri.parse('https://meshtastic.org/docs/introduction/'));
+                    Uri.parse('https://meshtastic.org/docs/introduction/'),
+                  );
                 },
               ),
               BaseListTile(
@@ -356,15 +404,19 @@ class IndexSettingView extends StatelessWidget {
                 trailing: const Icon(Icons.open_in_new),
                 onTapFunction: () {
                   launchUrl(
-                      Uri.parse('https://github.com/edwinyoo44/MeshSight/'));
+                    Uri.parse('https://github.com/edwinyoo44/MeshSight/'),
+                  );
                 },
               ),
               BaseListTile(
                 title: "MeshSight-APP-Flutter on GitHub",
                 trailing: const Icon(Icons.open_in_new),
                 onTapFunction: () {
-                  launchUrl(Uri.parse(
-                      'https://github.com/edwinyoo44/MeshSight-APP-Flutter/'));
+                  launchUrl(
+                    Uri.parse(
+                      'https://github.com/edwinyoo44/MeshSight-APP-Flutter/',
+                    ),
+                  );
                 },
               ),
             ],

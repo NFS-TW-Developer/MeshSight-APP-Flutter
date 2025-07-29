@@ -65,6 +65,7 @@
     "MapTileRegion": "地圖圖磚地區",
     "NodeDetail": "節點詳情",
     "NodeInformation": "節點資訊",
+    "NodeModemPreset": "節點 Modem Preset",
     "NodeTelemetryDevice": "節點遙測(裝置)",
     "NotValidContent": "並非有效的內容",
     "NumOnlineLocalNodes": "區域節點數量",

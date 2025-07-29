@@ -27,6 +27,19 @@ class IndexSettingViewModel extends BaseViewModel {
   List<String> _mapTileProviderList = ['default'];
   List<String> get mapTileProviderList => _mapTileProviderList;
 
+  final List<String> _nodeModemPresetList = [
+    "UNKNOWN",
+    "LONG_SLOW",
+    "LONG_MOD",
+    "LONG_FAST",
+    "MEDIUM_SLOW",
+    "MEDIUM_FAST",
+    "SHORT_SLOW",
+    "SHORT_FAST",
+    "SHORT_TURBO",
+  ];
+  List<String> get nodeModemPresetList => _nodeModemPresetList;
+
   Map<String, dynamic> _apiAppSettingData = {}; // API data
   Map<String, dynamic> get apiAppSettingData => _apiAppSettingData;
 
@@ -62,27 +75,35 @@ class IndexSettingViewModel extends BaseViewModel {
 
       if (_appSettingMap.nodeMaxAgeInHours >
           _apiAppSettingData['meshtasticPositionMaxQueryPeriod']) {
-        await setAppSettingMap(AppSettingMap(
+        await setAppSettingMap(
+          AppSettingMap(
             nodeMaxAgeInHours:
-                _apiAppSettingData['meshtasticPositionMaxQueryPeriod']));
+                _apiAppSettingData['meshtasticPositionMaxQueryPeriod'],
+          ),
+        );
       }
       if (_appSettingMap.nodeNeighborMaxAgeInHours >
           _apiAppSettingData['meshtasticNeighborinfoMaxQueryPeriod']) {
-        await setAppSettingMap(AppSettingMap(
+        await setAppSettingMap(
+          AppSettingMap(
             nodeMaxAgeInHours:
-                _apiAppSettingData['meshtasticNeighborinfoMaxQueryPeriod']));
+                _apiAppSettingData['meshtasticNeighborinfoMaxQueryPeriod'],
+          ),
+        );
       }
       setBusy(false);
     } catch (e) {
       showStatusSnackBar(
-          AppStatusMessage(status: false, message: S.current.ApiErrorMsg1));
+        AppStatusMessage(status: false, message: S.current.ApiErrorMsg1),
+      );
     }
   }
 
   Future<void> setAppSettingApi(AppSettingApi appSettingApi) async {
     setBusy(true);
-    _appSettingApi =
-        await SharedPreferencesUtil.setAppSettingApi(appSettingApi);
+    _appSettingApi = await SharedPreferencesUtil.setAppSettingApi(
+      appSettingApi,
+    );
     setBusy(false);
   }
 
@@ -92,14 +113,16 @@ class IndexSettingViewModel extends BaseViewModel {
 
   Future<void> setAppSettingMap(AppSettingMap appSettingMap) async {
     setBusy(true);
-    _appSettingMap =
-        await SharedPreferencesUtil.setAppSettingMap(appSettingMap);
+    _appSettingMap = await SharedPreferencesUtil.setAppSettingMap(
+      appSettingMap,
+    );
     _mapTileRegionList =
         GlobalConfiguration().getDeepValue('map:tile').keys.toList();
-    _mapTileProviderList = GlobalConfiguration()
-        .getDeepValue('map:tile:${_appSettingMap.tileRegion}')
-        .keys
-        .toList();
+    _mapTileProviderList =
+        GlobalConfiguration()
+            .getDeepValue('map:tile:${_appSettingMap.tileRegion}')
+            .keys
+            .toList();
     setBusy(false);
   }
 
@@ -128,9 +151,10 @@ class IndexSettingViewModel extends BaseViewModel {
             controller: textController,
             decoration: InputDecoration(
               hintText: hintText,
-              errorText: validateFunction(textController.text)
-                  ? null
-                  : S.current.NotValidContent,
+              errorText:
+                  validateFunction(textController.text)
+                      ? null
+                      : S.current.NotValidContent,
             ),
           ),
           actions: <Widget>[

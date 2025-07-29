@@ -12,6 +12,7 @@ class AppSettingMap {
   final int nodeNeighborMaxAgeInHours;
   final int nodeMarkSize;
   final bool nodeMarkNameVisible;
+  final List<String> nodeModemPresetList;
   final MapVision mapVision;
 
   AppSettingMap({
@@ -26,6 +27,17 @@ class AppSettingMap {
     this.nodeNeighborMaxAgeInHours = 1,
     this.nodeMarkSize = 64,
     this.nodeMarkNameVisible = true,
+    this.nodeModemPresetList = const [
+      "UNKNOWN",
+      "LONG_SLOW",
+      "LONG_MOD",
+      "LONG_FAST",
+      "MEDIUM_SLOW",
+      "MEDIUM_FAST",
+      "SHORT_SLOW",
+      "SHORT_FAST",
+      "SHORT_TURBO",
+    ],
     this.mapVision = const MapVision(),
   });
 
@@ -41,6 +53,7 @@ class AppSettingMap {
     int? nodeNeighborMaxAgeInHours,
     int? nodeMarkSize,
     bool? nodeMarkNameVisible,
+    List<String>? nodeModemPresetList,
     MapVision? mapVision,
   }) {
     return AppSettingMap(
@@ -56,6 +69,7 @@ class AppSettingMap {
           nodeNeighborMaxAgeInHours ?? this.nodeNeighborMaxAgeInHours,
       nodeMarkSize: nodeMarkSize ?? this.nodeMarkSize,
       nodeMarkNameVisible: nodeMarkNameVisible ?? this.nodeMarkNameVisible,
+      nodeModemPresetList: nodeModemPresetList ?? this.nodeModemPresetList,
       mapVision: mapVision ?? this.mapVision,
     );
   }
@@ -73,6 +87,7 @@ class AppSettingMap {
       'nodeNeighborMaxAgeInHours': nodeNeighborMaxAgeInHours,
       'nodeMarkSize': nodeMarkSize,
       'nodeMarkNameVisible': nodeMarkNameVisible,
+      'nodeModemPresetList': nodeModemPresetList,
       'mapVision': mapVision.toMap(),
     };
   }
@@ -91,6 +106,7 @@ class AppSettingMap {
       nodeNeighborMaxAgeInHours: map['nodeNeighborMaxAgeInHours'],
       nodeMarkSize: map['nodeMarkSize'],
       nodeMarkNameVisible: map['nodeMarkNameVisible'],
+      nodeModemPresetList: List<String>.from(map['nodeModemPresetList']),
       mapVision: MapVision.fromMap(map['mapVision']) ?? const MapVision(),
     );
   }

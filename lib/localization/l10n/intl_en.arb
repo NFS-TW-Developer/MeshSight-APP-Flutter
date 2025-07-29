@@ -65,6 +65,7 @@
     "MapTileRegion": "Map Tile Region",
     "NodeDetail": "Node Detail",
     "NodeInformation": "Node Information",
+    "NodeModemPreset": "Node Modem Preset",
     "NodeTelemetryDevice": "Node Telemetry(Device)",
     "NotValidContent": "Not valid content.",
     "NumOnlineLocalNodes": "Number Online Local Nodes",
