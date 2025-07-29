@@ -106,7 +106,8 @@ class AppSettingMap {
       nodeNeighborMaxAgeInHours: map['nodeNeighborMaxAgeInHours'],
       nodeMarkSize: map['nodeMarkSize'],
       nodeMarkNameVisible: map['nodeMarkNameVisible'],
-      nodeModemPresetList: List<String>.from(map['nodeModemPresetList']),
+      nodeModemPresetList: List<String>.from(map['nodeModemPresetList'])
+        ..sort(),
       mapVision: MapVision.fromMap(map['mapVision']) ?? const MapVision(),
     );
   }
