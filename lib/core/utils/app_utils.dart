@@ -1,29 +1,9 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
-import 'package:logging_flutter/logging_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../localization/generated/l10n.dart';
-import '../../router/app_router.dart';
-import '../app_core.dart';
 import '../models/app_info_data.dart';
 
 class AppUtils {
-  /*
-   重新啟動 APP
-   */
-  static void restartApp({BuildContext? context}) {
-    Flogger.d('APP 重新啟動');
-    // 取得路由，如果未傳入則使用全域變數(非必要情況下不建議使用)
-    StackRouter router = appLocator<AppRouter>();
-    if (context != null) router = AutoRouter.of(context);
-    //Go back till no route (Restart)
-    router.popUntil(((route) => false));
-    // Navigate to first widget to the app **AppRoot()**
-    router.pushNamed('/');
-    return;
-  }
-
   /*
    獲取 APP 資訊
    */

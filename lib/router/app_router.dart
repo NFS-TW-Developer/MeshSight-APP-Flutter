@@ -7,53 +7,54 @@ import 'app_router.gr.dart';
   這裡會有一些基本的路由操作
 */
 @AutoRouterConfig(replaceInRouteName: 'View,Route')
-class AppRouter extends $AppRouter {
+class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
+    AutoRoute(
+      path: '/index',
+      initial: true,
+      page: IndexRoute.page,
+      children: [
+        RedirectRoute(path: '', redirectTo: 'map'),
         AutoRoute(
-          path: '/welcome',
-          page: WelcomeRoute.page,
+          path: 'map',
+          page: IndexMapRoute.page,
+          maintainState: false, // 當路由切換時保持狀態
         ),
         AutoRoute(
-          path: '/index',
-          initial: true,
-          page: IndexRoute.page,
-          children: [
-            RedirectRoute(path: '', redirectTo: 'map'),
-            AutoRoute(
-              path: 'map', page: IndexMapRoute.page,
-              maintainState: false, // 當路由切換時保持狀態
-            ),
-            AutoRoute(
-              path: 'analysis', page: IndexAnalysisRoute.page,
-              maintainState: false, // 當路由切換時保持狀態
-            ),
-            AutoRoute(
-              path: 'setting', page: IndexSettingRoute.page,
-              maintainState: false, // 當路由切換時保持狀態
-            ),
-          ],
+          path: 'analysis',
+          page: IndexAnalysisRoute.page,
+          maintainState: false, // 當路由切換時保持狀態
         ),
         AutoRoute(
-          path: '/embed',
-          page: EmbedRouter.page,
-          children: [
-            AutoRoute(
-              path: 'map/:latitude/:longitude/:zoom', page: EmbedMapRoute.page,
-              maintainState: true, // 當路由切換時保持狀態
-            ),
-          ],
+          path: 'setting',
+          page: IndexSettingRoute.page,
+          maintainState: false, // 當路由切換時保持狀態
         ),
+      ],
+    ),
+    AutoRoute(
+      path: '/embed',
+      page: EmbedRouter.page,
+      children: [
         AutoRoute(
-          path: '/node',
-          page: NodeRouter.page,
-          children: [
-            AutoRoute(
-              path: 'detail/:nodeId', page: NodeDetailRoute.page,
-              maintainState: false, // 當路由切換時保持狀態
-            ),
-          ],
+          path: 'map/:latitude/:longitude/:zoom',
+          page: EmbedMapRoute.page,
+          maintainState: true, // 當路由切換時保持狀態
         ),
-        RedirectRoute(path: '/*', redirectTo: '/'),
-      ];
+      ],
+    ),
+    AutoRoute(
+      path: '/node',
+      page: NodeRouter.page,
+      children: [
+        AutoRoute(
+          path: 'detail/:nodeId',
+          page: NodeDetailRoute.page,
+          maintainState: false, // 當路由切換時保持狀態
+        ),
+      ],
+    ),
+    RedirectRoute(path: '/*', redirectTo: '/'),
+  ];
 }

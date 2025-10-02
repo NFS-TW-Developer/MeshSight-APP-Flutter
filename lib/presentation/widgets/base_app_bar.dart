@@ -7,45 +7,52 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final Widget? leading;
 
-  const BaseAppBar(
-      {super.key,
-      required this.appBar,
-      this.title,
-      this.actions,
-      this.leading});
+  const BaseAppBar({
+    super.key,
+    required this.appBar,
+    this.title,
+    this.actions,
+    this.leading,
+  });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
       // 如果有提供 leading，則使用提供的 leading，否則使用路由判斷
-      leading: (leading != null)
-          ? leading
-          : (AutoRouter.of(context).canPop()) // 如果可以返回上一頁，則顯示返回按鈕
+      leading:
+          (leading != null)
+              ? leading
+              : (AutoRouter.of(context).canPop()) // 如果可以返回上一頁，則顯示返回按鈕
               ? IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    AutoRouter.of(context).maybePop();
-                  },
-                )
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  AutoRouter.of(context).maybePop();
+                },
+              )
               : (AutoRouter.of(context).current.name !=
-                      'IndexRoute') // 如果不是首頁，則顯示返回首頁按鈕
-                  ? IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      onPressed: () {
-                        AutoRouter.of(context).replaceNamed('/');
-                      },
-                    )
-                  : const SizedBox.shrink(),
-      title: (title != null)
-          ? Text(
-              title!,
-              style: const TextStyle(
+                  'IndexRoute') // 如果不是首頁，則顯示返回首頁按鈕
+              ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  AutoRouter.of(context).popUntilRoot();
+                },
+              )
+              : const SizedBox.shrink(),
+      title:
+          (title != null)
+              ? Text(
+                title!,
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 24,
-                  fontWeight: FontWeight.w900),
-            )
-          : SizedBox(width: 200, child: Image.asset('assets/images/logo.png')),
+                  fontWeight: FontWeight.w900,
+                ),
+              )
+              : SizedBox(
+                width: 200,
+                child: Image.asset('assets/images/logo.png'),
+              ),
       centerTitle: true,
       actions: actions,
     );
