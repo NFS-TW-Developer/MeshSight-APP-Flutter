@@ -613,7 +613,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
           alignment: Alignment.center,
           polygonOptions: PolygonOptions(
             borderColor: Colors.blueAccent,
-            color: Colors.black.withValues(alpha: (0.78 * 255).toDouble()),
+            color: Colors.black.withValues(alpha: 0.12),
             borderStrokeWidth: 2,
           ),
           centerMarkerOnClick: false,
@@ -666,7 +666,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
         zoom: widget.embedMapVision.zoom,
       );
     } else {
-      // 如果非 web 環境，取得目前位置全縣
+      // 如果非 web 環境，取得目前位置權限
       if (!kIsWeb) {
         // 檢查權限
         PermissionStatus permission = await Permission.location.status;
@@ -795,9 +795,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                             ' ▲  ',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Colors.green.withValues(
-                                alpha: (0.78 * 255).toDouble(),
-                              ),
+                              color: Colors.green.withValues(alpha: 0.78),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -1015,9 +1013,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(2),
                     border: Border.all(
-                      color: Colors.black.withValues(
-                        alpha: (0.44 * 255).toDouble(),
-                      ),
+                      color: Colors.black.withValues(alpha: 0.44),
                       width: 1,
                     ),
                   ),
@@ -1078,7 +1074,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
   ) {
     return CircleMarker(
       point: point,
-      color: Colors.orange.withValues(alpha: (0.78 * 255).toDouble()),
+      color: Colors.orange.withValues(alpha: 0.12),
       borderColor: Colors.orange,
       borderStrokeWidth: 2,
       useRadiusInMeter: true,
@@ -1129,7 +1125,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
         Polyline(
           points: [pointA, pointB],
           strokeWidth: 2,
-          color: color.withValues(alpha: (0.22 * 255).toDouble()),
+          color: color.withValues(alpha: 0.78),
           pattern: StrokePattern.dashed(segments: segments),
         ),
       ],
@@ -1142,7 +1138,7 @@ class _MeshNodeMapState extends State<MeshNodeMap>
       polygons: [
         Polygon(
           points: [pointA, pointB, pointC],
-          color: Colors.green.withValues(alpha: (0.78 * 255).toDouble()),
+          color: Colors.green.withValues(alpha: 0.78),
         ),
       ],
     );
