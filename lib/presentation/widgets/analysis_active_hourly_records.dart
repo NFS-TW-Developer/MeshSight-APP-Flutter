@@ -50,15 +50,15 @@ class AnalysisActiceHourlyRecordsState
     if (_isLoading) {
       return _buildLoadingState();
     }
-    
+
     if (_errorMessage != null) {
       return _buildErrorState();
     }
-    
+
     if (_barGroups.isEmpty) {
       return _buildEmptyState();
     }
-    
+
     return _buildChart();
   }
 
@@ -74,10 +74,7 @@ class AnalysisActiceHourlyRecordsState
           const SizedBox(height: 16),
           Text(
             S.current.Loading,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey.shade600,
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
           ),
         ],
       ),
@@ -89,19 +86,12 @@ class AnalysisActiceHourlyRecordsState
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.error_outline,
-            size: 48,
-            color: Colors.red.shade400,
-          ),
+          Icon(Icons.error_outline, size: 48, color: Colors.red.shade400),
           const SizedBox(height: 16),
           Text(
             _errorMessage ?? S.current.ApiErrorMsg1,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey.shade600,
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
           ),
           const SizedBox(height: 16),
           ElevatedButton.icon(
@@ -124,18 +114,11 @@ class AnalysisActiceHourlyRecordsState
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.bar_chart_outlined,
-            size: 48,
-            color: Colors.grey.shade400,
-          ),
+          Icon(Icons.bar_chart_outlined, size: 48, color: Colors.grey.shade400),
           const SizedBox(height: 16),
           Text(
             S.current.NoDataAvailable,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey.shade600,
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
           ),
         ],
       ),
@@ -147,8 +130,12 @@ class AnalysisActiceHourlyRecordsState
       builder: (context, constraints) {
         // 根據螢幕寬度調整顯示間隔
         final screenWidth = constraints.maxWidth;
-        final showEveryNth = screenWidth < 400 ? 24 : screenWidth < 600 ? 12 : 8;
-        
+        final showEveryNth = screenWidth < 400
+            ? 24
+            : screenWidth < 600
+            ? 12
+            : 8;
+
         return BarChart(
           BarChartData(
             alignment: BarChartAlignment.spaceAround,
@@ -195,23 +182,15 @@ class AnalysisActiceHourlyRecordsState
             gridData: FlGridData(
               show: true,
               checkToShowHorizontalLine: (value) => value % 10 == 0,
-              getDrawingHorizontalLine: (value) => FlLine(
-                strokeWidth: 1,
-                color: Colors.grey.shade300,
-              ),
+              getDrawingHorizontalLine: (value) =>
+                  FlLine(strokeWidth: 1, color: Colors.grey.shade300),
               drawVerticalLine: false,
             ),
             borderData: FlBorderData(
               show: true,
               border: Border(
-                bottom: BorderSide(
-                  color: Colors.grey.shade300,
-                  width: 1,
-                ),
-                left: BorderSide(
-                  color: Colors.grey.shade300,
-                  width: 1,
-                ),
+                bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+                left: BorderSide(color: Colors.grey.shade300, width: 1),
               ),
             ),
             barGroups: _barGroups,
@@ -239,9 +218,9 @@ class AnalysisActiceHourlyRecordsState
       Map<String, dynamic>? data =
           await appLocator<MeshsightGatewayApiService>()
               .analysisActiveHourlyRecords(
-        start: now.subtract(const Duration(hours: 24)),
-        end: now,
-      );
+                start: now.subtract(const Duration(hours: 24)),
+                end: now,
+              );
       if (data == null || data["status"] == "error") {
         throw (data != null
             ? "${S.current.ApiErrorMsg1}\n${data['message']}"
@@ -265,24 +244,32 @@ class AnalysisActiceHourlyRecordsState
     if (_apiData.isEmpty || _apiData['items'] == null) {
       return const SideTitleWidget(axisSide: AxisSide.bottom, child: Text(''));
     }
-    
+
     final items = _apiData['items'] as List<dynamic>?;
     if (items == null || value.toInt() >= items.length) {
       return const SideTitleWidget(axisSide: AxisSide.bottom, child: Text(''));
     }
-    
+
     try {
       String timestamp = items[value.toInt()]['timestamp'] ?? '';
-      if (timestamp.isEmpty) return const SideTitleWidget(axisSide: AxisSide.bottom, child: Text(''));
-      
+      if (timestamp.isEmpty) {
+        return const SideTitleWidget(
+          axisSide: AxisSide.bottom,
+          child: Text(''),
+        );
+      }
+
       DateTime dateTime = DateTime.parse(timestamp).toLocal();
-      
+
       // 在窄螢幕上只顯示關鍵時間點
       final screenWidth = MediaQuery.of(context).size.width;
       if (screenWidth < 400 && dateTime.hour % 6 != 0) {
-        return const SideTitleWidget(axisSide: AxisSide.bottom, child: Text(''));
+        return const SideTitleWidget(
+          axisSide: AxisSide.bottom,
+          child: Text(''),
+        );
       }
-      
+
       return SideTitleWidget(
         axisSide: meta.axisSide,
         child: Transform.rotate(
@@ -291,7 +278,7 @@ class AnalysisActiceHourlyRecordsState
             padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
             child: Text(
               "${dateTime.hour.toString().padLeft(2, '0')}h",
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 8,
                 fontWeight: FontWeight.w600,
                 color: Colors.black87,
@@ -331,7 +318,7 @@ class AnalysisActiceHourlyRecordsState
         try {
           double knownCount = (items[i]['knownCount'] ?? 0).toDouble();
           double unknownCount = (items[i]['unknownCount'] ?? 0).toDouble();
-          
+
           result.add(
             BarChartGroupData(
               x: i,
@@ -340,14 +327,10 @@ class AnalysisActiceHourlyRecordsState
                   toY: knownCount + unknownCount,
                   width: 16,
                   rodStackItems: [
+                    BarChartRodStackItem(0, knownCount, Colors.blue.shade400),
                     BarChartRodStackItem(
-                      0, 
-                      knownCount, 
-                      Colors.blue.shade400,
-                    ),
-                    BarChartRodStackItem(
-                      knownCount, 
-                      knownCount + unknownCount, 
+                      knownCount,
+                      knownCount + unknownCount,
                       Colors.orange.shade400,
                     ),
                   ],
@@ -368,7 +351,7 @@ class AnalysisActiceHourlyRecordsState
 
   double _getMaxY() {
     if (_barGroups.isEmpty) return 10;
-    
+
     double maxValue = 0;
     for (var group in _barGroups) {
       for (var rod in group.barRods) {
@@ -377,7 +360,7 @@ class AnalysisActiceHourlyRecordsState
         }
       }
     }
-    
+
     // 添加一些邊距，讓圖表看起來更好
     return (maxValue * 1.1).ceilToDouble();
   }
