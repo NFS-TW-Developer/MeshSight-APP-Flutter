@@ -30,17 +30,20 @@ class IndexAnalysisView extends StatelessWidget {
     BuildContext context,
     IndexAnalysisViewModel model,
   ) {
-    return CustomScrollView(
-      slivers: [
-        // 主要圖表區域
-        SliverToBoxAdapter(child: _buildMainChart(context)),
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: CustomScrollView(
+        slivers: [
+          // 主要圖表區域
+          SliverToBoxAdapter(child: _buildMainChart(context)),
 
-        // 分佈分析網格
-        SliverToBoxAdapter(child: _buildDistributionGrid(context, model)),
+          // 分佈分析網格
+          SliverToBoxAdapter(child: _buildDistributionGrid(context, model)),
 
-        // 底部間距
-        const SliverToBoxAdapter(child: SizedBox(height: 32)),
-      ],
+          // 底部間距
+          const SliverToBoxAdapter(child: SizedBox(height: 32)),
+        ],
+      ),
     );
   }
 
