@@ -40,6 +40,8 @@
     "Legend": "Legend",
     "Loading": "Loading...",
     "LocationInformation": "Location Information",
+    "LocationPermissionDenied": "Location Permission Denied",
+    "LocationPermissionDeniedForever": "Location permission is permanently denied, please enable location permission in system settings",
     "LocationPrecision": "Location Precision",
     "Longitude": "Longitude",
     "LoraModemPreset": "Lora Modem Preset",

@@ -40,6 +40,8 @@
     "Legend": "圖例",
     "Loading": "讀取中...",
     "LocationInformation": "定位資訊",
+    "LocationPermissionDenied": "定位權限被拒絕",
+    "LocationPermissionDeniedForever": "定位權限被永久拒絕，請至系統設定中開啟定位權限",
     "LocationPrecision": "定位精度",
     "Longitude": "經度",
     "LoraModemPreset": "Lora Modem Preset",
