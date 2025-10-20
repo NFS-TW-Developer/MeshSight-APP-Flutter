@@ -1,0 +1,4 @@
+storeFile=<keystore file path>
+storePassword=<password for keystore>
+keyAlias=<key alias>
+keyPassword=<password for key>
